@@ -548,4 +548,37 @@ $("folderNewSubBtn").onclick=()=>{
 };
 
 $("exportBtn").onclick=async()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="knowledge-base-backup.json";a.click();URL.revokeObjectURL(a.href)}
-loadState();renderNav();renderHome();
+async function startApp() {
+  try {
+    if (localStorage.getItem("ssr-kb-backup-loaded-v1") !== "yes") {
+      const response = await fetch("./knowledge-base-backup.json");
+
+      if (!response.ok) {
+        throw new Error("Could not load the backup JSON file.");
+      }
+
+      const backup = await response.json();
+
+      if (
+        Array.isArray(backup.folders) &&
+        Array.isArray(backup.articles)
+      ) {
+        state = backup;
+        state.trash = state.trash || [];
+        saveState();
+
+        localStorage.setItem("ssr-kb-backup-loaded-v1", "yes");
+      } else {
+        throw new Error("The backup file has an unexpected format.");
+      }
+    }
+  } catch (error) {
+    console.error("Backup loading failed:", error);
+  }
+
+  loadState();
+  renderNav();
+  renderHome();
+}
+
+startApp();
