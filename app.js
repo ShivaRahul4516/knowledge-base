@@ -550,7 +550,7 @@ $("folderNewSubBtn").onclick=()=>{
 $("exportBtn").onclick=async()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="knowledge-base-backup.json";a.click();URL.revokeObjectURL(a.href)}
 async function startApp() {
   try {
-    if (localStorage.getItem("ssr-kb-backup-loaded-v1") !== "yes") {
+    if (localStorage.getItem("ssr-kb-backup-loaded-v2") !== "yes") {
       const response = await fetch("./knowledge-base-backup.json");
 
       if (!response.ok) {
@@ -567,7 +567,7 @@ async function startApp() {
         state.trash = state.trash || [];
         saveState();
 
-        localStorage.setItem("ssr-kb-backup-loaded-v1", "yes");
+        localStorage.setItem("ssr-kb-backup-loaded-v2", "yes");
       } else {
         throw new Error("The backup file has an unexpected format.");
       }
