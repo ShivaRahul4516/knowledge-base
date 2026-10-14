@@ -548,9 +548,12 @@ $("folderNewSubBtn").onclick=()=>{
 };
 
 $("exportBtn").onclick=async()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="knowledge-base-backup.json";a.click();URL.revokeObjectURL(a.href)}
+
 async function startApp() {
   try {
-    if (localStorage.getItem("ssr-kb-backup-loaded-v2") !== "yes") {
+    const backupLoaded = localStorage.getItem("ssr-kb-backup-loaded-v2");
+
+    if (backupLoaded !== "yes") {
       const response = await fetch("./knowledge-base-backup.json");
 
       if (!response.ok) {
@@ -563,22 +566,31 @@ async function startApp() {
         Array.isArray(backup.folders) &&
         Array.isArray(backup.articles)
       ) {
-        state = backup;
-        state.trash = state.trash || [];
-        saveState();
+        state = {
+          folders: backup.folders,
+          articles: backup.articles,
+          trash: backup.trash || []
+        };
 
+        saveState();
         localStorage.setItem("ssr-kb-backup-loaded-v2", "yes");
       } else {
         throw new Error("The backup file has an unexpected format.");
       }
     }
-  } catch (error) {
-    console.error("Backup loading failed:", error);
-  }
 
-  loadState();
-  renderNav();
-  renderHome();
+    loadState();
+    renderNav();
+    renderHome();
+
+  } catch (error) {
+    console.error("Knowledge base loading failed:", error);
+
+    loadState();
+    renderNav();
+    renderHome();
+  }
 }
 
 startApp();
+
