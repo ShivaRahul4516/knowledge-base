@@ -1,0 +1,17 @@
+# Merge & Email
+
+## Overview
+
+- Add what you learn about **Merge & Email** here.
+- Add the purpose, behavior and important details.
+
+## Details
+
+### Notes
+
+- Add notes as you learn them.
+- Add examples, screenshots and test observations here.
+
+## Important Points
+
+- Add important points here.

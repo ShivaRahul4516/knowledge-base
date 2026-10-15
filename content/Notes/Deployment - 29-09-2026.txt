@@ -1,0 +1,54 @@
+Basics
+
+What is Deployment?
+- Applying changes to an existing application using a Patch / Build Files is called as Deployment.
+
+What is Services application?
+- It is an application that displays a list of all the programs that actually run in the background.
+- Click Win + R and type Services.msc to open the services window.
+
+What is a Patch?
+- A targeted Fix of a bug can be called as Patch.
+
+What is a Server and a Client?
+- A computer providing services to other computers is called as Server.
+- It receives requests from clients, processes those requests, and sends back a response.
+- The Client's request is usually sent to Application server which requests the necessary data from the database server. And the database server sends the data to application server and the app server sends the data back to the Client.
+- When I access the Google Chrome, this browser can act as a Client - An application requesting services from the server is called as a Client.
+
+What is an Environment?
+- A setup where application is installed and running for a particular purpose, where a particular version of the application is running.
+- DEV  → development
+- QA   → testing
+- UAT  → user acceptance
+- PROD → live/production use
+
+-----------------------------------------------------------------------
+
+Deployment Process
+
+Win + R -> Services.msc
+
+Stop the following services 
+ - Text Extraction
+ - Format Converter
+ - Doc Manager
+ - Workflow Escalation. 
+
+In the Support Repository, they will create a job and I have to login as that user and download the files attached to the the job.
+
+Using Win + R, 
+ - I have to enter the shared path.
+ - Run a batch file which will create the required Folder structure with current date.
+ - Login to the Support Repository - Workflow - My Jobs - Process - Atachments - Download the necessary files.
+ - Move / paste the files in that respective Folder.  
+ - Run the Patch.
+ - When we run the Patch - we select incremental Backup which will automatically create a folder with current date. (Full Backup Option will take too much time)
+ - Also Update the Bugs List file.
+ - The Excel file should be re-named after the assignee.
+ - Once the patch work is over, Start the services again and try to login to the application.
+ - If you are not able to login - with permission of the team lead you can use the rollback script.
+
+
+
+Note: VTPL-079 - \\vtplsvr03\f\InternalRelease\ViciCloud 9.1.1.9

@@ -1,0 +1,106 @@
+# User Management
+
+## List of Functionalities
+
+### Buttons 
+- Add User
+- Import User
+- Swap User
+- Inactive User
+- Export to PDF / Excel with
+  Current Page / All Pages Dropdown
+
+### Actions
+- Edit (Click on Edit)
+- We will get 4 options - Update - Add to group - Profile Edit - Cancel.
+
+## List of Columns in the Data Grid
+- Photo
+- Username
+- First Name
+- Last Name
+- Mobile No.
+- User Type
+- User Pool
+- Department
+- Email ID
+- Status
+- Actions
+
+## Add User (Just Click on the Button)
+
+### Username (Mandatory Field)
+- Once user is created, it cannot be changed.
+- Min 1 Character is necessary.
+- Max 50 Characters.
+- Cannot be Blank, as it is Mandatory.  
+- Accepts Alphabets, Numbers, and   Alphanumeric characters.
+- Cannot create Username Duplicates as it is Case    - insensitive.
+
+### Password / Change Password
+- Once password is created, can be updated again.
+- Password and Confirm Password has to match.
+- It is Case - Sensitive.
+- What kind of characters are accepted and how many characters depends on Pwd Rules Tab in the Configuration.
+
+### First Name
+- This is a Mandatory Field.
+- Min 1
+- Max 100
+- All characters allowed except few Special Characters like $%<> , 
+
+### Type of User (Mandatory)
+- Administration: This user has much higher access then normal or Scanner user.
+
+- Normal - Can't access Admin Module
+                - Can't access few Portlets in Dashboard Module like All Jobs, Backup Details, Volume Information, User Information, Logged in Users and Data Extraction.
+
+ - Can't access few Sub - Modules in Manage like Purge Mails, Upload Logo, there is no "ALL USERS" Hyperlink in the recycle Bin. And also, no access to metadata import.
+
+- A normal user cannot access Workflow - Designer but if he is added to a group called as 
+"WFDESIGNERGROUP" that allows the normal user to access designer menu.
+
+- Workflow - No Form Reports.
+
+- Reports - No ECM.
+
+- Workflow Reports - Normal - Cannot access User wise Job Details
+- Workflow-wise job details only available for the Super-Admin.
+
+- Scanner - Only used to Scan and upload the physical documents into the Repository.
+
+- By Default, this type of user has no permission   for Cabinet Creation and Document type Creation.
+
+###User Pool (Mandatory)
+
+- Named User Pool: Licenses are assigned individually to users. To accommodate new users beyond the license limit, existing users must be removed to free up licenses.
+
+- Concurrent User Pool: Total licenses = 25; total users = 50. Only 25 users can access the repository at a time on a first-come, first-served basis.
+
+### Email ID (Mandatory)
+
+### Cabinet Creation
+- User cannot create new Cabinets without this permission.
+
+### User cannot create new Doc Type without this permission.
+
+### User Status
+- Set to Active / Inactive.
+
+### Add to group 
+- Can add new / existing user / inactive user to any single / Multiple groups.
+
+## Inactive User
+- Using this, you can turn active users into Inactive users.
+- You can turn single / multiple users into inactive users.
+
+## Swap User
+
+
+
+## Export
+
+- You mainly have 2 option in this dropdown for Export.
+- Current Page (Option 1)
+- All Pages. (Option 2)
+- You can Export the User List in Excel / PDF Format.

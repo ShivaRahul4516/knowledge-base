@@ -1,0 +1,17 @@
+# Cut
+
+## Overview
+
+- Add what you learn about **Cut** here.
+- Add the purpose, behavior and important details.
+
+## Details
+
+### Notes
+
+- Add notes as you learn them.
+- Add examples, screenshots and test observations here.
+
+## Important Points
+
+- Add important points here.
