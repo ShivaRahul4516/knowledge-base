@@ -2,18 +2,6 @@
   "format_version": 1,
   "folders": [
     {
-      "id": "f-4b42c6690ebeb867",
-      "name": "Administration",
-      "parent": null,
-      "path": "Administration"
-    },
-    {
-      "id": "f-257fa33b6a4c2225",
-      "name": "Users & Groups",
-      "parent": "f-4b42c6690ebeb867",
-      "path": "Administration/Users & Groups"
-    },
-    {
       "id": "f-8a7525b1492fb848",
       "name": "Notes",
       "parent": null,
@@ -39,34 +27,6 @@
     }
   ],
   "articles": [
-    {
-      "id": "a-50fa6f32e9261603",
-      "folder": "f-257fa33b6a4c2225",
-      "title": "BASICS",
-      "content": "# New Topic\n\n## Overview\n\n- Start writing your notes here.\n- Add as many headings, subheadings and bullet points as you need.",
-      "path": "Administration/Users & Groups/BASICS.txt"
-    },
-    {
-      "id": "a-772a4343064b921a",
-      "folder": "f-257fa33b6a4c2225",
-      "title": "External Users",
-      "content": "# New Topic\n\n## Overview\n\n- Start writing your notes here.\n- Add as many headings, subheadings and bullet points as you need.",
-      "path": "Administration/Users & Groups/External Users.txt"
-    },
-    {
-      "id": "a-90009888529faea0",
-      "folder": "f-257fa33b6a4c2225",
-      "title": "Group Management",
-      "content": "# New Topic\n\n## Overview\n\n- Start writing your notes here.\n- Add as many headings, subheadings and bullet points as you need.",
-      "path": "Administration/Users & Groups/Group Management.txt"
-    },
-    {
-      "id": "a-c577ef2cb8723081",
-      "folder": "f-257fa33b6a4c2225",
-      "title": "Sessions",
-      "content": "# New Topic\n\n## Overview\n\n- Start writing your notes here.\n- Add as many headings, subheadings and bullet points as you need.",
-      "path": "Administration/Users & Groups/Sessions.txt"
-    },
     {
       "id": "a-6255aaa35e9c05bd",
       "folder": "f-8a7525b1492fb848",
