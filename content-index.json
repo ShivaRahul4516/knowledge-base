@@ -20,30 +20,6 @@
       "path": "Administration/Users & Groups"
     },
     {
-      "id": "f-d00eca1bae674280",
-      "name": "Getting Started",
-      "parent": null,
-      "path": "Getting Started"
-    },
-    {
-      "id": "f-0c9c88f5bdb1b089",
-      "name": "Interface Overview",
-      "parent": "f-d00eca1bae674280",
-      "path": "Getting Started/Interface Overview"
-    },
-    {
-      "id": "f-21c47b5976e638b7",
-      "name": "Login",
-      "parent": "f-d00eca1bae674280",
-      "path": "Getting Started/Login"
-    },
-    {
-      "id": "f-012ccebe0a9f029f",
-      "name": "Navigation",
-      "parent": "f-d00eca1bae674280",
-      "path": "Getting Started/Navigation"
-    },
-    {
       "id": "f-5a23444828db654a",
       "name": "Manage",
       "parent": null,
@@ -422,27 +398,6 @@
       "title": "User Management",
       "content": "# User Management\n\n## List of Functionalities\n\n### Buttons \n- Add User\n- Import User\n- Swap User\n- Inactive User\n- Export to PDF / Excel with\n  Current Page / All Pages Dropdown\n\n### Actions\n- Edit (Click on Edit)\n- We will get 4 options - Update - Add to group - Profile Edit - Cancel.\n\n## List of Columns in the Data Grid\n- Photo\n- Username\n- First Name\n- Last Name\n- Mobile No.\n- User Type\n- User Pool\n- Department\n- Email ID\n- Status\n- Actions\n\n## Add User (Just Click on the Button)\n\n### Username (Mandatory Field)\n- Once user is created, it cannot be changed.\n- Min 1 Character is necessary.\n- Max 50 Characters.\n- Cannot be Blank, as it is Mandatory.  \n- Accepts Alphabets, Numbers, and   Alphanumeric characters.\n- Cannot create Username Duplicates as it is Case    - insensitive.\n\n### Password / Change Password\n- Once password is created, can be updated again.\n- Password and Confirm Password has to match.\n- It is Case - Sensitive.\n- What kind of characters are accepted and how many characters depends on Pwd Rules Tab in the Configuration.\n\n### First Name\n- This is a Mandatory Field.\n- Min 1\n- Max 100\n- All characters allowed except few Special Characters like $%<> , \n\n### Type of User (Mandatory)\n- Administration: This user has much higher access then normal or Scanner user.\n\n- Normal - Can't access Admin Module\n                - Can't access few Portlets in Dashboard Module like All Jobs, Backup Details, Volume Information, User Information, Logged in Users and Data Extraction.\n\n - Can't access few Sub - Modules in Manage like Purge Mails, Upload Logo, there is no \"ALL USERS\" Hyperlink in the recycle Bin. And also, no access to metadata import.\n\n- A normal user cannot access Workflow - Designer but if he is added to a group called as \n\"WFDESIGNERGROUP\" that allows the normal user to access designer menu.\n\n- Workflow - No Form Reports.\n\n- Reports - No ECM.\n\n- Workflow Reports - Normal - Cannot access User wise Job Details\n- Workflow-wise job details only available for the Super-Admin.\n\n- Scanner - Only used to Scan and upload the physical documents into the Repository.\n\n- By Default, this type of user has no permission   for Cabinet Creation and Document type Creation.\n\n###User Pool (Mandatory)\n\n- Named User Pool: Licenses are assigned individually to users. To accommodate new users beyond the license limit, existing users must be removed to free up licenses.\n\n- Concurrent User Pool: Total licenses = 25; total users = 50. Only 25 users can access the repository at a time on a first-come, first-served basis.\n\n### Email ID (Mandatory)\n\n### Cabinet Creation\n- User cannot create new Cabinets without this permission.\n\n### User cannot create new Doc Type without this permission.\n\n### User Status\n- Set to Active / Inactive.\n\n### Add to group \n- Can add new / existing user / inactive user to any single / Multiple groups.\n\n## Inactive User\n- Using this, you can turn active users into Inactive users.\n- You can turn single / multiple users into inactive users.\n\n## Swap User\nHello_Testing_Github_4516\n\n\n## Export\n\n- You mainly have 2 option in this dropdown for Export.\n- Current Page (Option 1)\n- All Pages. (Option 2)\n- You can Export the User List in Excel / PDF Format.\n",
       "path": "Administration/Users & Groups/User Management.txt"
-    },
-    {
-      "id": "a-4421703f3d13e4b8",
-      "folder": "f-0c9c88f5bdb1b089",
-      "title": "Interface Overview",
-      "content": "# Interface Overview\n\n## Overview\n\n- Add what you learn about **Interface Overview** here.\n- Add the purpose, behavior and important details.\n\n## Details\n\n### Notes\n\n- Add notes as you learn them.\n- Add examples, screenshots and test observations here.\n\n## Important Points\n\n- Add important points here....",
-      "path": "Getting Started/Interface Overview/Interface Overview.txt"
-    },
-    {
-      "id": "a-5f9a49c4dbeb6cc8",
-      "folder": "f-21c47b5976e638b7",
-      "title": "Login",
-      "content": "# Login\n\n## Overview\n\n- Add what you learn about **Login** here.\n- Add the purpose, behavior and important details.\n\n## Details\n\n### Notes\n\n- Add notes as you learn them.\n- Add examples, screenshots and test observations here.\n\n## Important Points\n\n- Add important points here.\n",
-      "path": "Getting Started/Login/Login.txt"
-    },
-    {
-      "id": "a-c825d954e51af005",
-      "folder": "f-012ccebe0a9f029f",
-      "title": "Navigation",
-      "content": "# Navigation\n\n## Overview\n\n- Add what you learn about **Navigation** here.\n- Add the purpose, behavior and important details.\n\n## Details\n\n### Notes\n\n- Add notes as you learn them.\n- Add examples, screenshots and test observations here.\n\n## Important Points\n\n- Add important points here.SDFSDFSFD",
-      "path": "Getting Started/Navigation/Navigation.txt"
     },
     {
       "id": "a-a837b35a1eb92610",
