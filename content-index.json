@@ -8,12 +8,6 @@
       "path": "Administration"
     },
     {
-      "id": "f-e181b2c9305d9c6f",
-      "name": "Configuration",
-      "parent": "f-4b42c6690ebeb867",
-      "path": "Administration/Configuration"
-    },
-    {
       "id": "f-257fa33b6a4c2225",
       "name": "Users & Groups",
       "parent": "f-4b42c6690ebeb867",
@@ -33,13 +27,6 @@
     }
   ],
   "articles": [
-    {
-      "id": "a-6ea3279bc7fa92c6",
-      "folder": "f-e181b2c9305d9c6f",
-      "title": "Configuration",
-      "content": "# Configuration\n\n## Overview\n\n- Add what you learn about **Configuration** here.\n- Add the purpose, behavior and important details.\n\n## Details\n\n### Notes\n\n- Add notes as you learn them.\n- Add examples, screenshots and test observations here.\n\n## Important Points\n\n- Add important points here.\n",
-      "path": "Administration/Configuration/Configuration.txt"
-    },
     {
       "id": "a-50fa6f32e9261603",
       "folder": "f-257fa33b6a4c2225",
