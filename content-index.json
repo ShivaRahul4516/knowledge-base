@@ -26,24 +26,6 @@
       "path": "Notes"
     },
     {
-      "id": "f-dacca3cba3f346a4",
-      "name": "Reports",
-      "parent": null,
-      "path": "Reports"
-    },
-    {
-      "id": "f-6e9abd87a916137c",
-      "name": "ECM",
-      "parent": "f-dacca3cba3f346a4",
-      "path": "Reports/ECM"
-    },
-    {
-      "id": "f-2827515993a65663",
-      "name": "Workflow",
-      "parent": "f-dacca3cba3f346a4",
-      "path": "Reports/Workflow"
-    },
-    {
       "id": "f-49c266baaaa70981",
       "name": "Search",
       "parent": null,
@@ -267,20 +249,6 @@
       "title": "Deployment - 29-09-2026",
       "content": "Basics\n\nWhat is Deployment?\n- Applying changes to an existing application using a Patch / Build Files is called as Deployment.\n\nWhat is Services application?\n- It is an application that displays a list of all the programs that actually run in the background.\n- Click Win + R and type Services.msc to open the services window.\n\nWhat is a Patch?\n- A targeted Fix of a bug can be called as Patch.\n\nWhat is a Server and a Client?\n- A computer providing services to other computers is called as Server.\n- It receives requests from clients, processes those requests, and sends back a response.\n- The Client's request is usually sent to Application server which requests the necessary data from the database server. And the database server sends the data to application server and the app server sends the data back to the Client.\n- When I access the Google Chrome, this browser can act as a Client - An application requesting services from the server is called as a Client.\n\nWhat is an Environment?\n- A setup where application is installed and running for a particular purpose, where a particular version of the application is running.\n- DEV  → development\n- QA   → testing\n- UAT  → user acceptance\n- PROD → live/production use\n\n-----------------------------------------------------------------------\n\nDeployment Process\n\nWin + R -> Services.msc\n\nStop the following services \n - Text Extraction\n - Format Converter\n - Doc Manager\n - Workflow Escalation. \n\nIn the Support Repository, they will create a job and I have to login as that user and download the files attached to the the job.\n\nUsing Win + R, \n - I have to enter the shared path.\n - Run a batch file which will create the required Folder structure with current date.\n - Login to the Support Repository - Workflow - My Jobs - Process - Atachments - Download the necessary files.\n - Move / paste the files in that respective Folder.  \n - Run the Patch.\n - When we run the Patch - we select incremental Backup which will automatically create a folder with current date. (Full Backup Option will take too much time)\n - Also Update the Bugs List file.\n - The Excel file should be re-named after the assignee.\n - Once the patch work is over, Start the services again and try to login to the application.\n - If you are not able to login - with permission of the team lead you can use the rollback script.\n\n\n\nNote: VTPL-079 - \\\\vtplsvr03\\f\\InternalRelease\\ViciCloud 9.1.1.9",
       "path": "Notes/Deployment - 29-09-2026.txt"
-    },
-    {
-      "id": "a-3521881abebd2b82",
-      "folder": "f-6e9abd87a916137c",
-      "title": "ECM",
-      "content": "# ECM\n\n## Overview\n\n- Add what you learn about **ECM** here.\n- Add the purpose, behavior and important details.\n\n## Details\n\n### Notes\n\n- Add notes as you learn them.\n- Add examples, screenshots and test observations here.\n\n## Important Points\n\n- Add important points here.\n",
-      "path": "Reports/ECM/ECM.txt"
-    },
-    {
-      "id": "a-a9ed2e30a1fd7978",
-      "folder": "f-2827515993a65663",
-      "title": "Workflow",
-      "content": "# Workflow\n\n## Overview\n\n- Add what you learn about **Workflow** here.\n- Add the purpose, behavior and important details.\n\n## Details\n\n### Notes\n\n- Add notes as you learn them.\n- Add examples, screenshots and test observations here.\n\n## Important Points\n\n- Add important points here.\n",
-      "path": "Reports/Workflow/Workflow.txt"
     },
     {
       "id": "a-add86a15ed691a1e",
