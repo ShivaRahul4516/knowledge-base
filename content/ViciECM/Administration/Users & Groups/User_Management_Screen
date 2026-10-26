@@ -1,0 +1,229 @@
+# **User Management**
+
+## **1. Overview**
+- The User Management module is used to create and manage user accounts in ViciECM.
+- It provides functionalities to manage user details, user types, group memberships, permissions, license pools, account status, and user list exports.
+- User access depends on the assigned user type, permissions, and group membership.
+
+## **2. User Management Screen**
+
+### **2.1 Buttons**
+- **Add User:** Opens the form to create a new user account.
+- **Import User:** Provides the functionality to import users.
+- **Swap User:** Provides the user-swapping functionality. The exact workflow requires verification.
+- **Inactive User:** Allows administrators to mark a single user or multiple users as inactive.
+- **Export to PDF / Excel:** Exports the user list in PDF or Excel format.
+  - Current Page
+  - All Pages
+
+### **2.2 Actions Menu**
+- Clicking **Edit** displays the following options:
+  - **Update:** Used to update user details.
+  - **Add to Group:** Assigns a user to one or more groups.
+  - **Profile Edit:** Opens the profile-editing functionality.
+  - **Cancel:** Cancels the current action.
+- The exact difference between Update and Profile Edit should be confirmed in the application.
+
+### **2.3 Data Grid Columns**
+- Photo
+- Username
+- First Name
+- Last Name
+- Mobile No.
+- User Type
+- User Pool
+- Department
+- Email ID
+- Status
+- Actions
+
+## **3. Add User**
+- Clicking **Add User** opens the form used to create a new user account.
+
+### **3.1 Username**
+- **Mandatory field.**
+- Minimum length: 1 character.
+- Maximum length: 50 characters.
+- Accepts alphabets, numbers, and alphanumeric combinations.
+- Duplicate usernames are not allowed, regardless of differences in letter casing.
+- Once created, the username cannot be changed.
+
+### **3.2 Password / Confirm Password**
+- A password is configured during user creation and can be updated later.
+- Password and Confirm Password must match.
+- Passwords are case-sensitive.
+- Accepted characters and password length depend on the rules configured in the Pwd Rules tab under Configuration.
+
+### **3.3 First Name**
+- **Mandatory field.**
+- Minimum length: 1 character.
+- Maximum length: 100 characters.
+- Certain special characters are restricted, including $, %, <, and >.
+- The complete list of restricted characters should be confirmed in the application.
+
+### **3.4 Type of User**
+- **Mandatory field.**
+- Determines the user's access to application modules and functionalities.
+
+#### **Administration**
+- Has higher access privileges than Normal and Scanner users.
+
+#### **Normal**
+- Cannot access the Admin module.
+- Cannot access the following Dashboard functionalities:
+  - All Jobs
+  - Backup Details
+  - Volume Information
+  - User Information
+  - Logged-in Users
+  - Data Extraction
+- Cannot access the following Manage functionalities:
+  - Purge Mails
+  - Upload Logo
+  - ALL USERS hyperlink in the Recycle Bin
+  - Metadata Import
+- Cannot access Workflow Designer by default.
+- Membership in WFDESIGNERGROUP allows a Normal user to access the Designer menu.
+
+#### **Workflow**
+- Cannot access Form Reports.
+
+#### **Reports**
+- Cannot access ECM.
+
+#### **Workflow Reports**
+- Normal users cannot access User-wise Job Details.
+- Workflow-wise Job Details are available only to the Super Admin, according to the supplied application rules.
+
+#### **Scanner**
+- Intended for scanning and uploading physical documents into the repository.
+- By default, has no permission to create cabinets or document types.
+
+### **3.5 User Pool**
+- **Mandatory field.**
+- Determines how user licenses are allocated.
+
+#### **Named User Pool**
+- Licenses are assigned individually to users.
+- When the license limit is reached, existing license allocations may need to be freed to accommodate additional users, according to the application's licensing rules.
+
+#### **Concurrent User Pool**
+- Example configuration: 25 licenses for 50 registered users.
+- Under this configuration, up to 25 users can access the repository concurrently.
+- Access is allocated on a first-come, first-served basis, according to the supplied application behavior.
+- These figures are an example configuration, not a universal system limit.
+
+### **3.6 Email ID**
+- **Mandatory field.**
+- An email address must be provided when creating a user.
+- Email format validation and duplicate-email restrictions should be confirmed in the application.
+
+### **3.7 Cabinet Creation Permission**
+- Controls whether the user can create new cabinets.
+- When permission is granted, the user can create cabinets, subject to other applicable access controls.
+- When permission is not granted, the user cannot create new cabinets.
+
+### **3.8 Document Type Creation Permission**
+- Controls whether the user can create new document types.
+- When permission is granted, the user can create document types, subject to other applicable access controls.
+- When permission is not granted, the user cannot create new document types.
+
+### **3.9 User Status**
+- Available statuses:
+  - Active
+  - Inactive
+- The effects of deactivation on login access, existing sessions, and license allocation should be verified separately.
+
+## **4. Add to Group**
+- Allows administrators to assign users to one or more application groups.
+- Supports:
+  - Adding a newly created user to a group.
+  - Adding an existing user to a group.
+  - Adding an inactive user to a group.
+  - Assigning a user to a single group.
+  - Assigning a user to multiple groups.
+- Group membership may provide access to additional functionalities.
+- Example: Membership in WFDESIGNERGROUP allows a Normal user to access the Workflow Designer menu.
+
+## **5. Inactive User**
+- Allows administrators to deactivate user accounts.
+- Supports deactivation of a single user or multiple users.
+- The selected users are intended to be marked as Inactive.
+- Login, session, and license-allocation behavior should be verified through application testing.
+
+## **6. Swap User**
+- The Swap User button is available on the User Management screen.
+- Reference value: Hello_Testing_Github_4516.
+- The exact purpose, input requirements, and expected outcome should be documented after verifying the functionality in the application.
+
+## **7. Export User List**
+- Supported formats:
+  - Excel
+  - PDF
+- The export scope can be selected from the dropdown.
+
+### **7.1 Current Page**
+- Exports the user records displayed on the current page.
+
+### **7.2 All Pages**
+- Exports the user list across all pages.
+
+### **7.3 Available Export Combinations**
+- Current Page - Excel
+- Current Page - PDF
+- All Pages - Excel
+- All Pages - PDF
+
+## **8. Key Business Rules**
+- Username is mandatory, unique regardless of letter casing, and cannot be changed after creation.
+- Username length must be between 1 and 50 characters.
+- Password validation follows the rules configured in the Pwd Rules tab.
+- First Name, Type of User, User Pool, and Email ID are mandatory.
+- User type determines access to specific application modules and functionalities.
+- Group membership can provide access to additional functionalities.
+- Cabinet creation and document type creation depend on their respective permissions.
+- Users can be marked as Active or Inactive.
+- Named and Concurrent User Pools follow different license allocation models.
+- User lists can be exported to PDF or Excel for the current page or all pages.
+
+## **9. Testing Focus Areas**
+
+### **9.1 Field Validation**
+- Verify mandatory-field validation.
+- Verify Username minimum and maximum length.
+- Verify case-insensitive duplicate Username validation.
+- Verify that Username cannot be changed after creation.
+- Verify Password and Confirm Password matching.
+- Verify password case sensitivity and configured password rules.
+- Verify First Name length and restricted-character validation.
+- Verify email validation rules implemented in the application.
+
+### **9.2 Access Control and Permissions**
+- Verify access restrictions for each user type.
+- Verify Normal user restrictions across Dashboard, Manage, and Workflow functionalities.
+- Verify Workflow Designer access through WFDESIGNERGROUP.
+- Verify cabinet and document type creation permissions.
+
+### **9.3 User and Group Management**
+- Verify Update, Add to Group, Profile Edit, and Cancel options.
+- Verify group assignment for new, existing, and inactive users.
+- Verify single-user and multiple-user deactivation.
+- Verify the resulting account status after deactivation.
+- Verify the Swap User workflow after establishing its expected behavior.
+
+### **9.4 License Management**
+- Verify Named User Pool license allocation.
+- Verify Concurrent User Pool behavior when the configured concurrent-user limit is reached.
+- Verify application behavior when available licenses are exhausted.
+
+### **9.5 Export Functionality**
+- Verify export to Excel and PDF.
+- Verify Current Page and All Pages options.
+- Verify exported record count and data accuracy.
+- Verify that exported data corresponds to the selected scope.
+
+## **10. Summary**
+- The User Management module centralizes user account administration, access control, group assignment, license allocation, and account status management.
+- Key controls include username uniqueness, password policy enforcement, role-based access, permission management, and license allocation.
+- Testing should focus on field validation, access restrictions, user lifecycle operations, license behavior, and export accuracy.
+- Unverified behavior should be confirmed before the notes are treated as an approved specification.
