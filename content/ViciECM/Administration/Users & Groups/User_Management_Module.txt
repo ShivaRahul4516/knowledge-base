@@ -1,11 +1,11 @@
-# **User Management**
+# User Management
 
-## **1. Overview**
+## 1. Overview
 - The User Management module is used to create and manage user accounts in ViciECM.
 - It provides functionalities to manage user details, user types, group memberships, permissions, license pools, account status, and user list exports.
 - User access depends on the assigned user type, permissions, and group membership.
 
-## **2. User Management Screen**
+## 2. User Management Screen
 
 ### **2.1 Buttons**
 - **Add User:** Opens the form to create a new user account.
