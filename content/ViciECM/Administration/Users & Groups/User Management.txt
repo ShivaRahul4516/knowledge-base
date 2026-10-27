@@ -32,10 +32,9 @@
 ### Username (Mandatory Field)
 - Once user is created, it cannot be changed.
 - Min 1 Character is necessary.
-- Max 50 Characters.
-- Cannot be Blank, as it is Mandatory.  
-- Accepts Alphabets, Numbers, and   Alphanumeric characters.
-- Cannot create Username Duplicates as it is Case    - insensitive.
+- Max 50 Characters. 
+- Accepts Alphabets, Numbers, and Alphanumeric characters.
+- Cannot create Username Duplicates as it is Case - insensitive.
 
 ### Password / Change Password
 - Once password is created, can be updated again.
@@ -52,8 +51,8 @@
 ### Type of User (Mandatory)
 - Administration: This user has much higher access then normal or Scanner user.
 
-- Normal - Can't access Admin Module
-                - Can't access few Portlets in Dashboard Module like All Jobs, Backup Details, Volume Information, User Information, Logged in Users and Data Extraction.
+- Normal:  Can't access Admin Module
+         - Can't access few Portlets in Dashboard Module like All Jobs, Backup Details, Volume Information, User Information, Logged in Users and Data Extraction.
 
  - Can't access few Sub - Modules in Manage like Purge Mails, Upload Logo, there is no "ALL USERS" Hyperlink in the recycle Bin. And also, no access to metadata import.
 
@@ -87,7 +86,7 @@
 ### User Status
 - Set to Active / Inactive.
 
-### Add to group 
+### Add to group  
 - Can add new / existing user / inactive user to any single / Multiple groups.
 
 ## Inactive User
@@ -95,12 +94,19 @@
 - You can turn single / multiple users into inactive users.
 
 ## Swap User
-Hello_Testing_Github_4516
-
+- Using this feature, We can transfer the ownership of the files from old user to new user.
+- In this process, User Type will also get swapped.
+- The New User will replace old user
+- The files and folders the new user will have = new user + old user
+- On the other hand, The old user becomes inactive.
 
 ## Export
+- The Export dropdown provides two options for exporting the user list:
+   1) Current Page: Exports the user list displayed on the current page.
+   2) All Pages: Exports the complete user list across all pages.
+- The user list can be exported in Excel or PDF format.
 
-- You mainly have 2 option in this dropdown for Export.
-- Current Page (Option 1)
-- All Pages. (Option 2)
-- You can Export the User List in Excel / PDF Format.
+## Import Users
+- Using this feature, we can download a sample Excel template (.xlsx) and upload a list of multiple users to create them in a single operation.
+- We should ensure that all mandatory fields in the Excel sheet are populated. Non-mandatory fields can be left blank.
+- We should not delete any existing columns from the Excel template, as doing so may cause the Import Users process to fail.
