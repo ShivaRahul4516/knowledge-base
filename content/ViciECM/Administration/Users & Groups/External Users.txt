@@ -1,1 +1,37 @@
+# External Users
 
+## Purpose
+
+The **External Users** section in ViciECM allows administrators to manage existing external user access by updating the expiry time and controlling the access level.
+
+## Features
+
+- **View External Username:** Displays the existing external username. This field is read-only and cannot be modified.
+- **Update Expiry Time:** Allows administrators to modify the expiry date and time. This is a mandatory field.
+- **Control Access Level:** Allows administrators to set the access level to **Read** or **Edit**.
+- **View External User Details:** Displays information such as the username, access mode, logical path, job name, workflow name, and expiry time.
+- **Edit External User Settings:** Allows administrators to modify the available settings using the Edit (pencil) icon corresponding to an existing entry.
+
+## How to Update an External User
+
+1. Navigate to **Administration → External Users**.
+2. Locate the external user whose settings need to be updated.
+3. Click the **Edit (pencil) icon** in the corresponding row.
+4. View the **External Username**. The username cannot be edited.
+5. Select the required **Access** level: Read or Edit.
+6. Enter or select the required **Expiry Time** using the date and time fields. This field is mandatory.
+7. Click **Update** to save the changes.
+8. Click **Cancel** to discard the changes.
+
+## Access Levels
+
+- **Read:** Provides read-level access to the shared resource.
+- **Edit:** Provides edit-level access to the shared resource.
+
+*The exact permissions associated with each access level depend on the application's configuration.*
+
+## Important Notes
+
+- The external username is displayed for reference and cannot be modified.
+- **Expiry Time is mandatory** and must be specified when updating an external user's settings.
+- Verify the selected access level and expiry time before saving changes.
