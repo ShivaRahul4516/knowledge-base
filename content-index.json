@@ -20,28 +20,34 @@
       "path": "01_ViciECM/Administration/Users & Groups"
     },
     {
+      "id": "f-ed7002b439e9ac84",
+      "name": "content",
+      "parent": null,
+      "path": "content"
+    },
+    {
+      "id": "f-b1ac0b41f83b0f8c",
+      "name": "01_ViciECM",
+      "parent": "f-ed7002b439e9ac84",
+      "path": "content/01_ViciECM"
+    },
+    {
+      "id": "f-325762ac65e2e213",
+      "name": "Administration",
+      "parent": "f-b1ac0b41f83b0f8c",
+      "path": "content/01_ViciECM/Administration"
+    },
+    {
+      "id": "f-d9fe0f0e3aeec839",
+      "name": "Users & Groups",
+      "parent": "f-325762ac65e2e213",
+      "path": "content/01_ViciECM/Administration/Users & Groups"
+    },
+    {
       "id": "f-870a8ffd98f4f2bd",
       "name": "Deployment",
       "parent": null,
       "path": "Deployment"
-    },
-    {
-      "id": "f-b8a078fa47d03ccf",
-      "name": "ViciECM",
-      "parent": null,
-      "path": "ViciECM"
-    },
-    {
-      "id": "f-c9fe68960d6b469d",
-      "name": "Administration",
-      "parent": "f-b8a078fa47d03ccf",
-      "path": "ViciECM/Administration"
-    },
-    {
-      "id": "f-125cd50ed6f08b17",
-      "name": "Users & Groups",
-      "parent": "f-c9fe68960d6b469d",
-      "path": "ViciECM/Administration/Users & Groups"
     }
   ],
   "articles": [
@@ -53,18 +59,18 @@
       "path": "01_ViciECM/Administration/Users & Groups/User Management.txt"
     },
     {
+      "id": "a-7cc95c3767fa7889",
+      "folder": "f-d9fe0f0e3aeec839",
+      "title": "External Users",
+      "content": "# External Users\n\n## Purpose\n\nThe **External Users** section in ViciECM allows administrators to manage existing external user access by updating the expiry time and controlling the access level.\n\n## Features\n\n- **View External Username:** Displays the existing external username. This field is read-only and cannot be modified.\n- **Update Expiry Time:** Allows administrators to modify the expiry date and time. This is a mandatory field.\n- **Control Access Level:** Allows administrators to set the access level to **Read** or **Edit**.\n- **View External User Details:** Displays information such as the username, access mode, logical path, job name, workflow name, and expiry time.\n- **Edit External User Settings:** Allows administrators to modify the available settings using the Edit (pencil) icon corresponding to an existing entry.\n\n## How to Update an External User\n\n1. Navigate to **Administration → External Users**.\n2. Locate the external user whose settings need to be updated.\n3. Click the **Edit (pencil) icon** in the corresponding row.\n4. View the **External Username**. The username cannot be edited.\n5. Select the required **Access** level: Read or Edit.\n6. Enter or select the required **Expiry Time** using the date and time fields. This field is mandatory.\n7. Click **Update** to save the changes.\n8. Click **Cancel** to discard the changes.\n\n## Access Levels\n\n- **Read:** Provides read-level access to the shared resource.\n- **Edit:** Provides edit-level access to the shared resource.\n\n*The exact permissions associated with each access level depend on the application's configuration.*\n\n## Important Notes\n\n- The external username is displayed for reference and cannot be modified.\n- **Expiry Time is mandatory** and must be specified when updating an external user's settings.\n- Verify the selected access level and expiry time before saving changes.\n",
+      "path": "content/01_ViciECM/Administration/Users & Groups/External Users.txt"
+    },
+    {
       "id": "a-d7c548f2cf5ccb48",
       "folder": "f-870a8ffd98f4f2bd",
       "title": "Manual Deployment Process",
       "content": "# VTPL-079 - Application Patch Deployment Procedure\n\n## 1. Pre-Deployment Preparation\n\n### 1.1 Locate the Update Files\n- Navigate to the local PC's root directory where the application update files are provided.\n- Navigate to the specified network path where the deployment-related files are stored.\n\n### 1.2 Verify and Update Flags.ini\n- Locate the `Server` folder and open `Flags.ini` using Notepad++.\n- Before modifying the file, open Windows Registry Editor (`regedit`) and verify the existing application version number.\n- Identify and note down the following:\n  - Current Version Number: The version currently deployed.\n  - Next Version Number: The version to which the application will be upgraded.\n- Update the required version details in `Flags.ini` based on the registry information and deployment requirements.\n\n## 2. Target Server and Patch Preparation\n\n### 2.1 Access the Target Server\n- Select the target server: `VTPL-079`.\n- Access the VTPL-079 server.\n\n### 2.2 Collect the Required Patch\n- Locate and collect the required application patch file from the provided update location.\n- Navigate to the directory containing the `Database` folder.\n- Copy and paste the required application patch file into the same directory where the `Database` folder is located.\n\n## 3. Create the Deployment Folder\n\n### 3.1 Create a Date-Wise Folder\n- On the local PC, navigate to:\n\nC:\\Vici-Updates\\\n\n\n- Create a new folder using the current deployment date.\n\nExample:\n\nC:\\Vici-Updates\\30-10-2026\\\n\n### 3.2 Copy the Database Folder\n- Copy and paste the required `Database` folder into the newly created deployment folder.\n- Verify that all required database scripts and deployment-related files are available before proceeding.\n\n## 4. Stop IIS and Application Services\n\n### 4.1 Stop IIS\n- Open Command Prompt with Administrator privileges.\n- Execute the following command:\n\ncmd >iisreset -stop\n\n### 4.2 Stop Application Services\n- Stop the required application services on VTPL-079.\n- If any service does not stop normally, identify the corresponding process through:\n\nTask Manager > Details`\n\n- Terminate the relevant process if required and authorized.\n\n## 5. Backup and Patch Extraction\n\n### 5.1 Execute the Deployment Package\n- Execute the required patch deployment package.\n- The deployment process will automatically initiate a backup.\n\n### 5.2 Perform Incremental Backup\n- Select the `Incremental Backup` option, if prompted.\n- Verify that the backup process completes successfully.\n\n### 5.3 Extract the Patch\n- Once the backup is completed, allow the patch extraction process to continue.\n- Ensure that the extraction process completes successfully.\n\n## 6. Database Script Execution\n\n### 6.1 Open SQL Server Management Studio\n- Copy the extracted database scripts.\n- Open SQL Server Management Studio (SSMS).\n\n### 6.2 Execute Repository-Level Scripts\n- Select the `VICIECMSS` database (Repository level).\n- Open the SQL Query Editor.\n- Copy and paste the required database scripts one after another.\n- After pasting each script, click `Execute` to run it.\n- Follow the prescribed execution order.\n\n### 6.3 Execute RP-Level Scripts\n- Select the `RpDOCmgr` database (RP level).\n- Open the SQL Query Editor.\n- Copy and paste the required database scripts one after another.\n- After pasting each script, click `Execute` to run it.\n- Follow the prescribed execution order.\n\n### 6.4 Verify Script Execution\n- Verify that each script executes successfully without errors.\n- Proceed to the next script only after checking the execution result.\n- Ensure that all required database scripts have been executed.\n\n## 7. DCOM File Execution\n\n### 7.1 Locate the DCOM File\n- Locate the DCOM file provided with the deployment package.\n\n### 7.2 Execute the DCOM File\n- Execute the DCOM file as required by the deployment instructions.\n- Verify that the execution completes successfully.\n\n## 8. Application Configuration Changes\n\n### 8.1 Review Configuration Instructions\n- Review the `.txt` files provided with the patch.\n- Identify the configuration changes specified in the respective text files.\n\n### 8.2 Apply Configuration Changes\n- Apply the required changes to the corresponding application configuration files and locations.\n- Verify that the configuration values have been updated correctly.\n\n## 9. Restart Application Services and IIS\n\n### 9.1 Start Application Services\n- Start all the required application services on VTPL-079.\n- Verify that the services are running successfully.\n\n### 9.2 Start IIS\n- Open Command Prompt with Administrator privileges.\n- Execute the following command:\n\ncmd > iisreset -start\n\n### 9.3 Verify IIS Status\n- Confirm that IIS has started successfully.\n- Ensure that all required application services are running.\n\n## 10. Post-Deployment Verification\n\n### 10.1 Application Verification\n- Access the application and verify that it loads successfully.\n- Confirm that the updated application version is reflected correctly.\n\n### 10.2 Database Connectivity Verification\n- Verify application connectivity with the database.\n- Ensure that there are no database connectivity errors.\n\n### 10.3 Functional Verification\n- Perform basic application functionality checks.\n- Verify that the application modules are accessible and functioning as expected.\n\n### 10.4 Deployment Completion\n- Confirm that all deployment activities have been completed successfully.\n- Report any issues encountered during deployment to the concerned team.\n\n",
       "path": "Deployment/Manual Deployment Process.txt"
-    },
-    {
-      "id": "a-19e4a36b5e59349c",
-      "folder": "f-125cd50ed6f08b17",
-      "title": "External Users",
-      "content": "# External Users\n\n## Purpose\n\nThe **External Users** section in ViciECM allows administrators to manage existing external user access by updating the expiry time and controlling the access level.\n\n## Features\n\n- **View External Username:** Displays the existing external username. This field is read-only and cannot be modified.\n- **Update Expiry Time:** Allows administrators to modify the expiry date and time. This is a mandatory field.\n- **Control Access Level:** Allows administrators to set the access level to **Read** or **Edit**.\n- **View External User Details:** Displays information such as the username, access mode, logical path, job name, workflow name, and expiry time.\n- **Edit External User Settings:** Allows administrators to modify the available settings using the Edit (pencil) icon corresponding to an existing entry.\n\n## How to Update an External User\n\n1. Navigate to **Administration → External Users**.\n2. Locate the external user whose settings need to be updated.\n3. Click the **Edit (pencil) icon** in the corresponding row.\n4. View the **External Username**. The username cannot be edited.\n5. Select the required **Access** level: Read or Edit.\n6. Enter or select the required **Expiry Time** using the date and time fields. This field is mandatory.\n7. Click **Update** to save the changes.\n8. Click **Cancel** to discard the changes.\n\n## Access Levels\n\n- **Read:** Provides read-level access to the shared resource.\n- **Edit:** Provides edit-level access to the shared resource.\n\n*The exact permissions associated with each access level depend on the application's configuration.*\n\n## Important Notes\n\n- The external username is displayed for reference and cannot be modified.\n- **Expiry Time is mandatory** and must be specified when updating an external user's settings.\n- Verify the selected access level and expiry time before saving changes.\n",
-      "path": "ViciECM/Administration/Users & Groups/External Users.txt"
     }
   ]
 }
