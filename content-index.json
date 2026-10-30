@@ -20,6 +20,12 @@
       "path": "01_ViciECM/Administration/Users & Groups"
     },
     {
+      "id": "f-2c8f7a2869db6553",
+      "name": "02_Deployment ",
+      "parent": null,
+      "path": "02_Deployment "
+    },
+    {
       "id": "f-870a8ffd98f4f2bd",
       "name": "Deployment",
       "parent": null,
