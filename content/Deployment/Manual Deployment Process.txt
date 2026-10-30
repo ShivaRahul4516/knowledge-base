@@ -1,0 +1,153 @@
+# VTPL-079 - Application Patch Deployment Procedure
+
+## 1. Pre-Deployment Preparation
+
+### 1.1 Locate the Update Files
+- Navigate to the local PC's root directory where the application update files are provided.
+- Navigate to the specified network path where the deployment-related files are stored.
+
+### 1.2 Verify and Update Flags.ini
+- Locate the `Server` folder and open `Flags.ini` using Notepad++.
+- Before modifying the file, open Windows Registry Editor (`regedit`) and verify the existing application version number.
+- Identify and note down the following:
+  - Current Version Number: The version currently deployed.
+  - Next Version Number: The version to which the application will be upgraded.
+- Update the required version details in `Flags.ini` based on the registry information and deployment requirements.
+
+## 2. Target Server and Patch Preparation
+
+### 2.1 Access the Target Server
+- Select the target server: `VTPL-079`.
+- Access the VTPL-079 server.
+
+### 2.2 Collect the Required Patch
+- Locate and collect the required application patch file from the provided update location.
+- Navigate to the directory containing the `Database` folder.
+- Copy and paste the required application patch file into the same directory where the `Database` folder is located.
+
+## 3. Create the Deployment Folder
+
+### 3.1 Create a Date-Wise Folder
+- On the local PC, navigate to:
+
+C:\Vici-Updates\
+
+
+- Create a new folder using the current deployment date.
+
+Example:
+
+C:\Vici-Updates\30-10-2026\
+
+### 3.2 Copy the Database Folder
+- Copy and paste the required `Database` folder into the newly created deployment folder.
+- Verify that all required database scripts and deployment-related files are available before proceeding.
+
+## 4. Stop IIS and Application Services
+
+### 4.1 Stop IIS
+- Open Command Prompt with Administrator privileges.
+- Execute the following command:
+
+cmd >iisreset -stop
+
+### 4.2 Stop Application Services
+- Stop the required application services on VTPL-079.
+- If any service does not stop normally, identify the corresponding process through:
+
+Task Manager > Details`
+
+- Terminate the relevant process if required and authorized.
+
+## 5. Backup and Patch Extraction
+
+### 5.1 Execute the Deployment Package
+- Execute the required patch deployment package.
+- The deployment process will automatically initiate a backup.
+
+### 5.2 Perform Incremental Backup
+- Select the `Incremental Backup` option, if prompted.
+- Verify that the backup process completes successfully.
+
+### 5.3 Extract the Patch
+- Once the backup is completed, allow the patch extraction process to continue.
+- Ensure that the extraction process completes successfully.
+
+## 6. Database Script Execution
+
+### 6.1 Open SQL Server Management Studio
+- Copy the extracted database scripts.
+- Open SQL Server Management Studio (SSMS).
+
+### 6.2 Execute Repository-Level Scripts
+- Select the `VICIECMSS` database (Repository level).
+- Open the SQL Query Editor.
+- Copy and paste the required database scripts one after another.
+- After pasting each script, click `Execute` to run it.
+- Follow the prescribed execution order.
+
+### 6.3 Execute RP-Level Scripts
+- Select the `RpDOCmgr` database (RP level).
+- Open the SQL Query Editor.
+- Copy and paste the required database scripts one after another.
+- After pasting each script, click `Execute` to run it.
+- Follow the prescribed execution order.
+
+### 6.4 Verify Script Execution
+- Verify that each script executes successfully without errors.
+- Proceed to the next script only after checking the execution result.
+- Ensure that all required database scripts have been executed.
+
+## 7. DCOM File Execution
+
+### 7.1 Locate the DCOM File
+- Locate the DCOM file provided with the deployment package.
+
+### 7.2 Execute the DCOM File
+- Execute the DCOM file as required by the deployment instructions.
+- Verify that the execution completes successfully.
+
+## 8. Application Configuration Changes
+
+### 8.1 Review Configuration Instructions
+- Review the `.txt` files provided with the patch.
+- Identify the configuration changes specified in the respective text files.
+
+### 8.2 Apply Configuration Changes
+- Apply the required changes to the corresponding application configuration files and locations.
+- Verify that the configuration values have been updated correctly.
+
+## 9. Restart Application Services and IIS
+
+### 9.1 Start Application Services
+- Start all the required application services on VTPL-079.
+- Verify that the services are running successfully.
+
+### 9.2 Start IIS
+- Open Command Prompt with Administrator privileges.
+- Execute the following command:
+
+cmd > iisreset -start
+
+### 9.3 Verify IIS Status
+- Confirm that IIS has started successfully.
+- Ensure that all required application services are running.
+
+## 10. Post-Deployment Verification
+
+### 10.1 Application Verification
+- Access the application and verify that it loads successfully.
+- Confirm that the updated application version is reflected correctly.
+
+### 10.2 Database Connectivity Verification
+- Verify application connectivity with the database.
+- Ensure that there are no database connectivity errors.
+
+### 10.3 Functional Verification
+- Perform basic application functionality checks.
+- Verify that the application modules are accessible and functioning as expected.
+
+### 10.4 Deployment Completion
+- Confirm that all deployment activities have been completed successfully.
+- Report any issues encountered during deployment to the concerned team.
+
