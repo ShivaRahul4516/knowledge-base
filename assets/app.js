@@ -844,13 +844,33 @@ function renderMarkdown(markdown) {
    OPEN ARTICLE
 ========================================= */
 
+
 function openArticle(id) {
   const article = state.articles.find(x => x.id === id);
 
   if (!article) return;
 
-  $("articlePath").textContent =
-    folderPath(article.folder).join(" / ") + " / " + article.title;
+  const path = [];
+  let folder = state.folders.find(x => x.id === article.folder);
+  let guard = 0;
+
+  while (folder && guard++ < 30) {
+    path.unshift(folder);
+    folder = state.folders.find(x => x.id === folder.parent);
+  }
+
+  $("articlePath").innerHTML = `
+    <button class="breadcrumb-link" onclick="showHome()">Home</button>
+    ${path.map(item => `
+      <span class="breadcrumb-separator">/</span>
+      <button
+        class="breadcrumb-link"
+        onclick="openFolder('${item.id}')"
+      >${esc(item.name)}</button>
+    `).join("")}
+    <span class="breadcrumb-separator">/</span>
+    <span class="breadcrumb-current">${esc(article.title)}</span>
+  `;
 
   $("article").innerHTML =
     article.contentFormat === "html"
