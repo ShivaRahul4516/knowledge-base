@@ -1,29 +1,90 @@
 const KEY="ssr-kb-v4-complete-tree";
-let state={folders:[],articles:[],trash:[]}, connectedDir=null, editingId=null, contextTarget=null;
+let state={folders:[],articles:[],trash:[]}, connectedDir=null, editingId=null, editingFormat="markdown", contextTarget=null;
 
 const $=id=>document.getElementById(id);
 function uid(){return crypto.randomUUID?crypto.randomUUID():Date.now()+"-"+Math.random()}
 function slug(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"")}
 function saveState(){localStorage.setItem(KEY,JSON.stringify(state))}
+
+// Image binaries live in IndexedDB (not localStorage) so larger images do not
+// exhaust the browser's small localStorage quota.
+const ASSET_DB="technical-kb-assets", ASSET_STORE="images";
+function openAssetDB(){return new Promise((resolve,reject)=>{const req=indexedDB.open(ASSET_DB,1);req.onupgradeneeded=()=>req.result.createObjectStore(ASSET_STORE);req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
+async function putAsset(id,blob){const db=await openAssetDB();return new Promise((resolve,reject)=>{const tx=db.transaction(ASSET_STORE,"readwrite");tx.objectStore(ASSET_STORE).put(blob,id);tx.oncomplete=()=>{db.close();resolve(id)};tx.onerror=()=>{db.close();reject(tx.error)}})}
+async function getAsset(id){const db=await openAssetDB();return new Promise((resolve,reject)=>{const tx=db.transaction(ASSET_STORE,"readonly"),req=tx.objectStore(ASSET_STORE).get(id);req.onsuccess=()=>{db.close();resolve(req.result||null)};req.onerror=()=>{db.close();reject(req.error)}})}
+async function storeDataUrl(dataUrl){const [meta,data]=dataUrl.split(",");const mime=(meta.match(/data:(.*?);base64/)||[])[1]||"image/png";const binary=atob(data);const bytes=new Uint8Array(binary.length);for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);const id=uid();await putAsset(id,new Blob([bytes],{type:mime}));return id}
+async function hydrateImages(root){for(const img of root.querySelectorAll('img[src^="kbasset:"]')){const id=img.getAttribute("src").slice(8);try{const blob=await getAsset(id);if(blob)img.src=URL.createObjectURL(blob);else img.alt=(img.alt||"Image")+" (missing image file)"}catch(err){console.warn("Could not load stored image",err)}}}
+function cleanDocxHtml(html){const parsed=new DOMParser().parseFromString(html,"text/html");const allowed=new Set(["P","BR","H1","H2","H3","H4","UL","OL","LI","STRONG","B","EM","I","U","BLOCKQUOTE","TABLE","THEAD","TBODY","TR","TH","TD","A","IMG","PRE","CODE"]);function clean(node){for(const child of [...node.children]){if(!allowed.has(child.tagName)){child.replaceWith(...child.childNodes);continue}for(const attr of [...child.attributes]){if(child.tagName==="IMG"&&attr.name==="src"&&(/^(data:image\/|kbasset:)/i).test(attr.value))continue;if(child.tagName==="A"&&attr.name==="href"&&/^https?:|^mailto:/i.test(attr.value))continue;child.removeAttribute(attr.name)}clean(child)}}clean(parsed.body);return parsed.body.innerHTML}
+
 async function loadState(){
-  // GitHub Pages read-only mode: content is generated from the repository's TXT files.
-  const response = await fetch("content-index.json?cache=" + Date.now(), { cache: "no-store" });
-  if (!response.ok) throw new Error("Could not load content-index.json (HTTP " + response.status + ").");
-  const data = await response.json();
-  if (!Array.isArray(data.folders) || !Array.isArray(data.articles)) {
-    throw new Error("content-index.json has an unexpected format.");
+  const saved=localStorage.getItem(KEY);
+  if(saved){
+    try{
+      const parsed=JSON.parse(saved);
+      if(Array.isArray(parsed.folders)&&Array.isArray(parsed.articles)){
+        state={folders:parsed.folders,articles:parsed.articles,trash:Array.isArray(parsed.trash)?parsed.trash:[]};
+        return;
+      }
+    }catch(e){console.warn("Saved browser data could not be read.",e)}
   }
-  state = { folders: data.folders, articles: data.articles, trash: [] };
+  try{
+    const response=await fetch("content-index.json",{cache:"no-store"});
+    if(!response.ok)throw new Error("No published content-index.json found.");
+    const data=await response.json();
+    if(!Array.isArray(data.folders)||!Array.isArray(data.articles))throw new Error("Unexpected content-index.json format.");
+    state={folders:data.folders,articles:data.articles,trash:[]};saveState();
+  }catch(err){state={folders:[],articles:[],trash:[]};console.info("Starting with an empty workspace:",err.message)}
+}
+function byOrder(items){return [...items].sort((a,b)=>(a.order??0)-(b.order??0))}
+function renumber(items){items.forEach((item,index)=>item.order=index)}
+function dragStart(event,type,id){
+  event.stopPropagation();event.dataTransfer.effectAllowed="move";
+  event.dataTransfer.setData("text/plain",JSON.stringify({type,id}));
+}
+function allowDrop(event){event.preventDefault();event.dataTransfer.dropEffect="move"}
+function dropOn(event,targetType,targetId){
+  event.preventDefault();event.stopPropagation();
+  let dragged;try{dragged=JSON.parse(event.dataTransfer.getData("text/plain"))}catch(e){return}
+  if(!dragged||dragged.id===targetId)return;
+  const collection=dragged.type==="folder"?state.folders:state.articles;
+  const item=collection.find(x=>x.id===dragged.id);if(!item)return;
+  if(targetType==="folder-container" || (targetType==="folder" && dragged.type==="article")){
+    if(dragged.type==="folder"){
+      let parent=state.folders.find(x=>x.id===targetId),guard=0;
+      while(parent&&guard++<100){if(parent.id===item.id){alert("A folder cannot be moved into itself or one of its subfolders.");return}parent=state.folders.find(x=>x.id===parent.parent)}
+      item.parent=targetId;
+    }else item.folder=targetId;
+    const siblings=dragged.type==="folder"?state.folders.filter(x=>x.parent===targetId&&x.id!==item.id):state.articles.filter(x=>x.folder===targetId&&x.id!==item.id);
+    item.order=siblings.length;
+  }else{
+    if(dragged.type!==targetType)return;
+    const target=(targetType==="folder"?state.folders:state.articles).find(x=>x.id===targetId);if(!target)return;
+    const parentKey=targetType==="folder"?"parent":"folder";item[parentKey]=target[parentKey];
+    const siblings=(targetType==="folder"?state.folders:state.articles).filter(x=>x[parentKey]===target[parentKey]&&x.id!==item.id);
+    const index=siblings.findIndex(x=>x.id===targetId);siblings.splice(index<0?siblings.length:index,0,item);renumber(siblings);
+  }
+  saveState();renderNav();renderHome();renderManage();
+  if(window.currentFolderId)renderFolderContents(window.currentFolderId,$("folderFilter")?.value||"");
 }
 function folderPath(id){let a=[],f=state.folders.find(x=>x.id===id),guard=0;while(f&&guard++<30){a.unshift(f.name);f=state.folders.find(x=>x.id===f.parent)}return a}
 function childrenFolders(parent=null){return state.folders.filter(f=>f.parent===parent)}
+function renderNavFolder(f, depth=0){
+  const articles=byOrder(state.articles.filter(a=>a.folder===f.id));
+  const subs=byOrder(childrenFolders(f.id));
+  return `
+    <div class="nav-node" style="--depth:${depth}">
+      <button class="nav-folder" type="button" onclick="openFolder('${f.id}')" title="${esc(f.name)}">
+        <span class="nav-folder-icon">▸</span><span class="nav-item-name">${esc(f.name)}</span>
+      </button>
+      ${articles.map(a=>`<button class="nav-article" type="button" onclick="openArticle('${a.id}')" title="${esc(a.title)}"><span class="nav-doc-icon">▤</span><span class="nav-item-name">${esc(a.title)}</span></button>`).join("")}
+      ${subs.map(child=>renderNavFolder(child,depth+1)).join("")}
+    </div>`;
+}
 function renderNav(){
-  const groups=childrenFolders(null);
-  $("nav").innerHTML=groups.map(f=>`
-    <div class="group">${esc(f.name).toUpperCase()} ></div>
-    <button onclick="openFolder('${f.id}')">📁 ${esc(f.name)}</button>
-    ${state.articles.filter(a=>a.folder===f.id).map(a=>`<button onclick="openArticle('${a.id}')">📄 ${esc(a.title)}</button>`).join("")}
-  `).join("");
+  const roots=byOrder(childrenFolders(null));
+  $("nav").innerHTML=`
+    <div class="nav-section-label">YOUR LIBRARY</div>
+    ${roots.map(f=>renderNavFolder(f)).join("") || '<div class="nav-empty">No folders yet.</div>'}`;
 }
 
 function folderChildren(folderId){
@@ -48,15 +109,15 @@ function openFolder(id){
   $("folderBreadcrumb").innerHTML=folderBreadcrumbHtml(id);
   $("folderFilter").value="";
   renderFolderContents(id,"");
-  $("crumb").textContent=f.name;
+  if($("crumb")) $("crumb").textContent=f.name;
   show("folderView");
   window.scrollTo(0,0);
 }
 
 function renderFolderContents(id,filter=""){
   const f=state.folders.find(x=>x.id===id); if(!f)return;
-  const childFolders=state.folders.filter(x=>x.parent===id);
-  const childArticles=state.articles.filter(x=>x.folder===id);
+  const childFolders=byOrder(state.folders.filter(x=>x.parent===id));
+  const childArticles=byOrder(state.articles.filter(x=>x.folder===id));
   const q=filter.toLowerCase();
   const folders=childFolders.filter(x=>!q||x.name.toLowerCase().includes(q));
   const articles=childArticles.filter(x=>!q||(x.title+" "+x.content).toLowerCase().includes(q));
@@ -64,7 +125,7 @@ function renderFolderContents(id,filter=""){
   let html="";
   if(!q || folders.length){
     html += `<div class="content-section"><div class="content-section-title">FOLDERS <span>${folders.length}</span></div><div class="item-grid">
-      ${folders.map(x=>`<div class="content-item folder-item" data-type="folder" data-id="${x.id}" onclick="openFolder('${x.id}')" oncontextmenu="showContextMenu(event,'folder','${x.id}')">
+      ${folders.map(x=>`<div class="content-item folder-item" draggable="true" ondragstart='dragStart(event,"folder","${x.id}")' ondragover="allowDrop(event)" ondrop='dropOn(event,"folder","${x.id}")' data-type="folder" data-id="${x.id}" onclick="openFolder('${x.id}')" oncontextmenu="showContextMenu(event,'folder','${x.id}')">
         <div class="item-icon">📁</div><div><b>${esc(x.name)}</b><small>${state.folders.filter(s=>s.parent===x.id).length} subfolder(s) · ${state.articles.filter(a=>a.folder===x.id).length} article(s)</small></div><span>›</span>
       </div>`).join("")}
       ${folders.length===0?`<div class="empty-state compact">No subfolders here.</div>`:""}
@@ -72,7 +133,7 @@ function renderFolderContents(id,filter=""){
   }
 
   html += `<div class="content-section"><div class="content-section-title">ARTICLES <span>${articles.length}</span></div><div class="item-grid">
-    ${articles.map(a=>`<div class="content-item article-item" data-type="article" data-id="${a.id}" onclick="openArticle('${a.id}')" oncontextmenu="showContextMenu(event,'article','${a.id}')">
+    ${articles.map(a=>`<div class="content-item article-item" draggable="true" ondragstart='dragStart(event,"article","${a.id}")' ondragover="allowDrop(event)" ondrop='dropOn(event,"article","${a.id}")' data-type="article" data-id="${a.id}" onclick="openArticle('${a.id}')" oncontextmenu="showContextMenu(event,'article','${a.id}')">
       <div class="item-icon">📄</div><div><b>${esc(a.title)}</b><small>Documentation article</small></div><span>›</span>
     </div>`).join("")}
     ${articles.length===0?`<div class="empty-state compact">No articles here yet. Use <b>New Article</b> to add one.</div>`:""}
@@ -89,7 +150,7 @@ function show(view){
   const target=$(view);
   if(target) target.classList.remove("hidden");
 }
-function showHome(){show("homeView");$("crumb").textContent="Home";renderHome();window.scrollTo(0,0)}
+function showHome(){show("homeView");if($("crumb")) $("crumb").textContent="Home";renderHome();window.scrollTo(0,0)}
 
 
 function renderHome(query=""){
@@ -97,7 +158,7 @@ function renderHome(query=""){
   const container=$("folderCards");
   if(!container)return;
 
-  const roots=state.folders.filter(f=>f.parent===null);
+  const roots=byOrder(state.folders.filter(f=>f.parent===null));
   const folderHits=q
     ? state.folders.filter(f=>f.name.toLowerCase().includes(q))
     : roots;
@@ -174,6 +235,7 @@ function renderMarkdown(md){
     if(m=l.match(/^[-*]\s+(.+)/)){if(!ul){close();out.push("<ul>");ul=true}out.push(`<li>${inline(m[1])}</li>`);continue}
     if(m=l.match(/^\d+\.\s+(.+)/)){if(!ol){close();out.push("<ol>");ol=true}out.push(`<li>${inline(m[1])}</li>`);continue}
     if(m=l.match(/^>\s?(.+)/)){close();out.push(`<blockquote>${inline(m[1])}</blockquote>`);continue}
+    if(m=l.match(/^!\[([^\]]*)\]\((kbasset:[^)]+)\)$/)){close();out.push(`<p><img class="kb-inline-image" alt="${esc(m[1])}" src="${m[2]}"></p>`);continue}
     close();out.push(`<p>${inline(l)}</p>`);
   } close(); return out.join("")
 }
@@ -183,13 +245,14 @@ function inline(s){return esc(s).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>")
 function openArticle(id){
   const a=state.articles.find(x=>x.id===id);if(!a)return;
   $("articlePath").textContent=folderPath(a.folder).join(" / ")+" / "+a.title;
-  $("article").innerHTML=renderMarkdown(a.content);
+  $("article").innerHTML=a.contentFormat==="html"?a.content:renderMarkdown(a.content);
+  hydrateImages($("article"));
   $("articleEditBtn").onclick=()=>editArticle(id);
   $("articleDeleteBtn").onclick=()=>deleteItem("article",id);
   $("articleNewBtn").onclick=()=>{ $("currentFolder").value=a.folder; show("manageView"); renderManage(); newArticle(); };
   $("articleNewSubBtn").onclick=()=>{ $("currentFolder").value=a.folder; show("manageView"); renderManage(); newFolder(); };
   $("backBtn").onclick=()=>openFolder(a.folder);
-  $("crumb").textContent=a.title;
+  if($("crumb")) $("crumb").textContent=a.title;
   show("articleView");window.scrollTo(0,0)
 }
 
@@ -198,15 +261,15 @@ function fillFolderSelect(sel,includeRoot=false){
   sel.innerHTML=arr.map(f=>`<option value="${f.id}">${folderPath(f.id).join(" / ")}</option>`).join("")
 }
 function renderTree(){
-  const roots=childrenFolders(null);
+  const roots=byOrder(childrenFolders(null));
   $("tree").innerHTML=roots.map(renderFolder).join("");
   $("trashCount").textContent=state.trash.length;
 }
 function renderFolder(f){
-  const arts=state.articles.filter(a=>a.folder===f.id).map(a=>`<button class="file" data-type="article" data-id="${a.id}" onclick="editArticle('${a.id}')" oncontextmenu="showContextMenu(event,'article','${a.id}')">📄 ${a.title}</button>`).join("");
-  const subs=childrenFolders(f.id).map(renderFolder).join("");
-  return `<div class="folder" data-type="folder" data-id="${f.id}">
-    <div class="folder-title context-target" data-type="folder" data-id="${f.id}" oncontextmenu="showContextMenu(event,'folder','${f.id}')">📁 ${f.name}</div>
+  const arts=byOrder(state.articles.filter(a=>a.folder===f.id)).map(a=>`<button class="file" draggable="true" ondragstart='dragStart(event,"article","${a.id}")' ondragover="allowDrop(event)" ondrop='dropOn(event,"article","${a.id}")' data-type="article" data-id="${a.id}" onclick="editArticle('${a.id}')" oncontextmenu="showContextMenu(event,'article','${a.id}')">📄 ${a.title}</button>`).join("");
+  const subs=byOrder(childrenFolders(f.id)).map(renderFolder).join("");
+  return `<div class="folder" data-type="folder" data-id="${f.id}" ondragover="allowDrop(event)" ondrop='dropOn(event,"folder-container","${f.id}")'>
+    <div class="folder-title context-target" draggable="true" ondragstart='dragStart(event,"folder","${f.id}")' ondragover="allowDrop(event)" ondrop='dropOn(event,"folder","${f.id}")' data-type="folder" data-id="${f.id}" oncontextmenu="showContextMenu(event,'folder','${f.id}')">📁 ${f.name}</div>
     ${arts}
     ${subs}
   </div>`
@@ -374,6 +437,7 @@ function editArticle(id){
   const a=state.articles.find(x=>x.id===id);
   if(!a){alert("Article not found.");return;}
   editingId=id;
+  editingFormat=a.contentFormat||"markdown";
   show("manageView");
   renderManage();
   $("editorEmpty").classList.add("hidden");
@@ -382,11 +446,12 @@ function editArticle(id){
   $("editFolder").value=a.folder;
   $("editTitle").value=a.title;
   $("editContent").value=a.content;
+  $("editorFormatNote").textContent=a.contentFormat==="html"?"Imported Word document: converted to displayable HTML. Edit the text below only if you want to replace the imported layout.":"Text/Markdown editor. Uploaded images are inserted at the cursor position.";
   $("editTitle").focus();
 }
 
 function newArticle(folderId=null){
-  editingId=null;
+  editingId=null;editingFormat="markdown";
   show("manageView");
   renderManage();
   $("editorEmpty").classList.add("hidden");
@@ -394,6 +459,7 @@ function newArticle(folderId=null){
   $("editor").classList.remove("hidden");
   $("editTitle").value="";
   $("editContent").value="# New Topic\n\n## Overview\n\n- Start writing your notes here.\n- Add as many headings, subheadings and bullet points as you need.";
+  $("editorFormatNote").textContent="Text/Markdown editor. Uploaded images are inserted at the cursor position.";
   if(folderId) $("editFolder").value=folderId;
   else if($("currentFolder").value) $("editFolder").value=$("currentFolder").value;
   $("editTitle").focus();
@@ -417,7 +483,9 @@ $("newFolderBtn").onclick=()=>newFolder();
 
 $("saveBtn").onclick=async()=>{
   const title=$("editTitle").value.trim();
-  const content=$("editContent").value.trim();
+  let content=$("editContent").value.trim();
+  const contentFormat=editingId?editingFormat:"markdown";
+  if(contentFormat==="html")content=cleanDocxHtml(content);
   const folder=$("editFolder").value;
 
   if(!title){alert("Please enter an article title.");$("editTitle").focus();return;}
@@ -435,9 +503,9 @@ $("saveBtn").onclick=async()=>{
   if(editingId){
     saved=state.articles.find(a=>a.id===editingId);
     if(!saved){alert("The article could not be found.");return;}
-    Object.assign(saved,{title,content,folder});
+    Object.assign(saved,{title,content,folder,contentFormat});
   }else{
-    saved={id:uid(),title,content,folder};
+    saved={id:uid(),title,content,folder,contentFormat:"markdown",order:state.articles.filter(a=>a.folder===folder).length};
     state.articles.push(saved);
   }
 
@@ -454,7 +522,7 @@ $("saveBtn").onclick=async()=>{
   }
 
   editingId=saved.id;
-  alert("Article saved successfully.");
+  alert("Article saved in this browser. Use Export content to create a portable backup.");
   openArticle(saved.id);
 };
 
@@ -475,7 +543,7 @@ $("saveFolderBtn").onclick=()=>{
     return;
   }
 
-  const f={id:uid(),name,parent};
+  const f={id:uid(),name,parent,order:state.folders.filter(x=>x.parent===parent).length};
   state.folders.push(f);
   saveState();renderNav();renderHome();renderManage();
   alert("Folder created successfully.");
@@ -507,6 +575,54 @@ $("sideSearch").oninput=e=>{
 }
 $("themeBtn").onclick=()=>document.body.classList.toggle("dark");
 document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();if(!$("homeView").classList.contains("hidden"))$("homeSearch").focus();else $("sideSearch").focus()}})
+
+$("uploadDocsBtn")?.addEventListener("click",()=> $("documentUpload").click());
+$("documentUpload")?.addEventListener("change",async e=>{
+  const files=[...e.target.files||[]];if(!files.length)return;
+  const folder=window.currentFolderId||$("currentFolder")?.value||state.folders[0]?.id;
+  if(!folder){alert("Create a folder first, then upload files into it.");e.target.value="";return}
+  let imported=0;
+  for(const file of files){
+    const ext=file.name.split(".").pop().toLowerCase();let content="",format="markdown";
+    try{
+      if(["png","jpg","jpeg","gif","webp","bmp"].includes(ext)||file.type.startsWith("image/")){
+        const id=uid();await putAsset(id,file);content=`![${file.name.replace(/\.[^.]+$/,"") }](kbasset:${id})`;
+      }else if(ext==="txt"||ext==="md")content=await file.text();
+      else if(ext==="docx"){
+        if(!window.mammoth){alert("The Word DOCX reader did not load. Check your internet connection and retry.");continue}
+        const result=await window.mammoth.convertToHtml({arrayBuffer:await file.arrayBuffer()},{convertImage:window.mammoth.images.inline(async image=>({src:`data:${image.contentType};base64,${await image.read("base64")}`}))});
+        let html=cleanDocxHtml(result.value||"");
+        const doc=new DOMParser().parseFromString(html,"text/html");
+        for(const img of doc.querySelectorAll('img[src^="data:image/"]')){const id=await storeDataUrl(img.getAttribute("src"));img.setAttribute("src",`kbasset:${id}`)}
+        content=doc.body.innerHTML;format="html";
+      }else if(ext==="doc"){alert(file.name+" is an older .doc file. Save it as .docx in Word, then upload again.");continue}
+      else continue;
+      const title=file.name.replace(/\.(txt|md|docx|png|jpe?g|gif|webp|bmp)$/i,"");
+      const existing=state.articles.find(a=>a.folder===folder&&a.title.toLowerCase()===title.toLowerCase());
+      if(existing){if(!confirm(title+" already exists. Replace its content?"))continue;Object.assign(existing,{content,contentFormat:format,sourceFormat:ext})}
+      else state.articles.push({id:uid(),folder,title,content,contentFormat:format,sourceFormat:ext,order:state.articles.filter(a=>a.folder===folder).length});
+      imported++;
+    }catch(err){console.error(err);alert("Could not import "+file.name+": "+err.message)}
+  }
+  saveState();renderNav();renderHome();renderManage();e.target.value="";
+  if(window.currentFolderId)renderFolderContents(window.currentFolderId);
+  alert(`${imported} file(s) imported. Images are stored in this browser's IndexedDB.`);
+});
+
+$("addImagesBtn")?.addEventListener("click",()=>$("inlineImageUpload").click());
+$("inlineImageUpload")?.addEventListener("change",async e=>{
+  const files=[...e.target.files||[]];if(!files.length)return;
+  const textarea=$("editContent");let inserted="";
+  for(const file of files){
+    if(!file.type.startsWith("image/"))continue;
+    try{const id=uid();await putAsset(id,file);inserted+=`\n![${file.name.replace(/\.[^.]+$/,"") }](kbasset:${id})\n`;}
+    catch(err){alert("Could not store "+file.name+": "+err.message)}
+  }
+  const start=textarea.selectionStart,end=textarea.selectionEnd;
+  textarea.value=textarea.value.slice(0,start)+inserted+textarea.value.slice(end);
+  textarea.focus();textarea.selectionStart=textarea.selectionEnd=start+inserted.length;e.target.value="";
+});
+
 async function connectFolder(){
   if(!window.showDirectoryPicker)return alert("Your browser does not support folder access. Use current Edge/Chrome with the site running through Live Server.");
   try{connectedDir=await window.showDirectoryPicker({mode:"readwrite"});$("folderStatus").textContent="Connected: "+connectedDir.name;await importFolder(connectedDir);renderNav();renderHome();renderManage();alert("CONTENT FOLDER connected and read.")}
@@ -553,7 +669,15 @@ $("folderNewSubBtn").onclick=()=>{
   show("manageView");renderManage();$("currentFolder").value=current.id;newFolder();
 };
 
-$("exportBtn").onclick=async()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="knowledge-base-backup.json";a.click();URL.revokeObjectURL(a.href)}
+$("exportBtn").onclick=async()=>{
+  const ids=new Set();
+  const allArticles=[...state.articles,...state.trash.flatMap(t=>t.type==="article"?[t.item]:(t.articles||[]))];
+  for(const article of allArticles){for(const match of String(article.content||"").matchAll(/kbasset:([A-Za-z0-9-]+)/g))ids.add(match[1])}
+  const assets={};
+  for(const id of ids){const blob=await getAsset(id);if(blob)assets[id]=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(reader.error);reader.readAsDataURL(blob)})}
+  const backup={...state,assets};
+  const blob=new Blob([JSON.stringify(backup,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="knowledge-base-backup.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)
+}
 
 // GitHub Pages cannot write changes back to repository files. Hide editing controls
 // so visitors do not mistake browser-only edits for TXT-file updates.
@@ -565,11 +689,11 @@ function enableReadOnlyMode(){
   const empty=$("overviewEmpty");
   if(empty) empty.innerHTML="<b>Content could not be loaded.</b><span>Check that content-index.json exists in the published website.</span>";
 }
-enableReadOnlyMode();
+// Editing is enabled. GitHub Pages stores changes in this browser; export a backup to move them elsewhere.
 loadState().then(()=>{renderNav();renderHome();}).catch(err=>{
   console.error(err);
   const nav=$("nav"), cards=$("folderCards"), count=$("docCount");
-  if(nav) nav.innerHTML='<div class="group">CONTENT ERROR</div><div style="padding:10px;color:#8eacc9;font-size:12px">Could not load the TXT content index.</div>';
-  if(cards) cards.innerHTML='<div class="empty-state">Could not load content-index.json. Check the GitHub Pages deployment and repository files.</div>';
+  if(nav) nav.innerHTML='<div class="group">CONTENT ERROR</div><div style="padding:10px;color:#8eacc9;font-size:12px">No published content index found. Create folders or upload documents.</div>';
+  if(cards) cards.innerHTML='<div class="empty-state">Your workspace is empty. Create a folder or upload a document to get started.</div>';
   if(count) count.textContent="Content unavailable";
 });
