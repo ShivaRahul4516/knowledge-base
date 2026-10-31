@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Salapu Shiva Rahul's Knowledge Base</title>
+  <title>Technical Knowledge Hub</title>
   <link rel="stylesheet" href="assets/style.css">
   <style>
     .top-left{display:flex;align-items:center;gap:12px}
@@ -21,7 +21,7 @@
 </head>
 <body>
   <aside class="sidebar">
-    <div class="brand"><div class="logo">KB</div><div><b>Salapu Shiva Rahul's</b><small>Knowledge Base</small></div></div>
+    <div class="brand"><div class="logo">KH</div><div><b>Technical Knowledge Hub</b><small>Documentation &amp; Learning</small></div></div>
     <div class="searchbox"><span>⌕</span><input id="sideSearch" placeholder="Search topics..."></div>
     <nav id="nav"></nav>
   </aside>
@@ -34,13 +34,13 @@
 
     <section id="homeView" class="view">
       <div class="hero">
-        <div><label>PERSONAL DOCUMENTATION PORTAL</label>
-          <h1>Salapu Shiva Rahul's<br><em>Knowledge Base</em></h1>
-          <p>Organize everything you learn into folders, subfolders and documentation articles.</p>
+        <div><label>DOCUMENTATION WORKSPACE</label>
+          <h1>Technical<br><em>Knowledge Hub</em></h1>
+          <p>A structured workspace for technical notes, project documentation, procedures and reference files.</p>
           <div class="bigsearch"><span>⌕</span><input id="homeSearch" placeholder="Search the knowledge base..."><kbd>Ctrl K</kbd></div>
-          <div class="chips"><button>Browse</button><button>Workflow</button><button>Projects</button><button>Notes</button></div>
+          <div class="chips"><span class="hint">Use search to find folders and documents, or open a folder to browse.</span></div>
         </div>
-        <div class="hero-card"><b>Knowledge Base</b><div class="bar"></div><div class="bar short"></div><div class="fakebox"><b>Folders</b><small>Documents<br>Subfolders<br>Anything you want</small></div></div>
+        <div class="hero-card"><b>Technical Knowledge Hub</b><div class="bar"></div><div class="bar short"></div><div class="fakebox"><b>Folders</b><small>Documents<br>Subfolders<br>Anything you want</small></div></div>
       </div>
       <div class="section-title"><label>OVERVIEW</label><h2>Explore the Knowledge Base <small id="docCount"></small></h2></div>
       <div id="folderCards" class="cards"></div>
@@ -80,7 +80,7 @@
         <button class="primary" id="articleNewBtn">📄 New Article</button>
         <button class="danger" id="articleDeleteBtn">🗑 Delete</button>
       </div>
-      <article id="article"></article>
+      <article id="article" class="article"></article>
     </section>
 
     <section id="manageView" class="view hidden">
@@ -101,6 +101,7 @@
             <label>Folder</label><select id="editFolder"></select>
             <label>Title</label><input id="editTitle" placeholder="e.g. What is a Server?">
             <label>Content</label>
+            <div class="image-upload-row"><button class="secondary" type="button" id="addImagesBtn">🖼 Add images at cursor</button><input id="inlineImageUpload" type="file" accept="image/*" multiple hidden><span id="editorFormatNote" class="format-note">Text/Markdown editor. Uploaded images are inserted at the cursor position.</span></div>
             <textarea id="editContent" spellcheck="true" placeholder="# Heading
 
 Write your notes here.
@@ -131,19 +132,19 @@ Write your notes here.
         </div>
         <div class="storage-actions">
           <button id="connectBtn">📁 Connect CONTENT FOLDER</button>
-          <button id="importBtn">📄 Import .txt/.md files</button>
+          <button id="importBtn">📄 Import text files</button><button id="uploadDocsBtn">⬆ Upload documents &amp; images</button><input id="documentUpload" type="file" accept=".txt,.md,.docx,.doc,image/*" multiple hidden>
           <button id="exportBtn">⬇ Export content</button>
         </div>
         <details class="storage-help">
           <summary>How do I connect my text files?</summary>
           <ol>
             <li>Create one folder on your PC, for example <code>Knowledge Base Content</code>.</li>
-            <li>Put your <code>.txt</code> or <code>.md</code> files inside it. You can also organise them into subfolders.</li>
+            <li>Put your <code>.txt</code>, <code>.md</code> or <code>.docx</code> files inside it. You can also organise them into subfolders.</li>
             <li>Click <strong>Connect CONTENT FOLDER</strong> and choose that folder.</li>
-            <li>Use <strong>Import .txt/.md files</strong> when you want to bring existing notes into the Knowledge Base.</li>
+            <li>Use <strong>Import text files</strong> for existing <code>.txt</code>/<code>.md</code> notes, or <strong>Upload documents</strong> to add <code>.docx</code> and text documents.</li>
             <li>Use <strong>Export content</strong> when you want a backup of your articles as files.</li>
           </ol>
-          <p><strong>Recommended:</strong> keep the files in one dedicated folder and use subfolders for modules such as Browse, Workflow, Manage, etc.</p>
+          <p><strong>Supported:</strong> TXT, Markdown, DOCX (Word) and common image formats. DOCX images are extracted and displayed. Legacy <code>.doc</code> files must be converted to <code>.docx</code> first. Changes are saved in this browser; export a backup regularly.</p>
         </details>
       </div>
     </section>
@@ -160,6 +161,7 @@ Write your notes here.
     </section>
   </main>
 
+  <script src="https://unpkg.com/mammoth@1.8.0/mammoth.browser.min.js"></script>
   <script src="assets/app.js"></script>
   <script>
     // V5 convenience: always provide a reliable way back to Home.
