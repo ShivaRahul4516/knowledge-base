@@ -1,78 +1,53 @@
-
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Technical Knowledge Hub</title>
-  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/style.css?v=20261031-functionality-fix">
+  <style>
+    .top-left{display:flex;align-items:center;gap:12px}
+    .home-btn{border:0;background:transparent;color:inherit;cursor:pointer;font:inherit;padding:7px 10px;border-radius:8px}
+    .home-btn:hover{background:rgba(0,0,0,.06)}
+    .overview-empty{display:none;flex-direction:column;gap:6px;padding:24px;border:1px dashed #cbd5e1;border-radius:14px;background:#fff;color:#64748b;margin-top:16px}
+    .overview-empty b{color:#0f2742;font-size:16px}
+    .storage-head{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+    .storage-head small{display:block;margin-top:4px;color:#64748b}
+    .storage-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .storage-help{margin-top:14px;padding-top:12px;border-top:1px solid #e2e8f0;color:#475569}
+    .storage-help summary{cursor:pointer;font-weight:600;color:#0f2742}
+    .storage-help li{margin:7px 0}
+  </style>
+<style>#crumb{display:none!important;visibility:hidden!important;width:0!important;margin:0!important;padding:0!important}</style>
 </head>
 <body>
   <aside class="sidebar">
-    <div class="brand">
-      <div class="logo">KH</div>
-      <div>
-        <b>Technical Knowledge Hub</b>
-        <small>Documentation &amp; Learning</small>
-      </div>
-    </div>
-
-    <div class="searchbox">
-      <span>⌕</span>
-      <input id="sideSearch" placeholder="Search topics...">
-    </div>
-
+    <div class="brand"><div class="logo">KH</div><div><b>Technical Knowledge Hub</b><small>Documentation &amp; Learning</small></div></div>
+    <div class="searchbox"><span>⌕</span><input id="sideSearch" placeholder="Search topics..."></div>
     <nav id="nav"></nav>
   </aside>
 
   <main>
-    <header class="topbar">
-      <div class="top-left">
-        <button class="home-btn" id="homeBtn" type="button">⌂ Home</button>
-      </div>
-      <div class="top-actions">
-        <button class="primary" id="manageBtn">✎ Manage Content</button>
-        <button class="iconbtn" id="themeBtn">◐</button>
-      </div>
-    </header>
+    <header class="topbar"><div class="top-left"><button class="home-btn" id="homeBtn" type="button" aria-label="Go to home">⌂ <span>Home</span></button></div><div class="top-actions">
+      <button class="primary" id="manageBtn">✎ Manage Content</button>
+      <button class="iconbtn" id="themeBtn">◐</button>
+    </div></header>
 
     <section id="homeView" class="view">
       <div class="hero">
-        <div>
-          <label>DOCUMENTATION WORKSPACE</label>
+        <div><label>DOCUMENTATION WORKSPACE</label>
           <h1>Technical<br><em>Knowledge Hub</em></h1>
           <p>A structured workspace for technical notes, project documentation, procedures and reference files.</p>
-          <div class="bigsearch">
-            <span>⌕</span>
-            <input id="homeSearch" placeholder="Search the knowledge base...">
-            <kbd>Ctrl K</kbd>
-          </div>
-          <div class="chips">
-            <span class="hint">Search folders and documents, or open a folder to browse.</span>
-          </div>
+          <div class="bigsearch"><span>⌕</span><input id="homeSearch" placeholder="Search the knowledge base..."><kbd>Ctrl K</kbd></div>
+          <div class="chips"><span class="hint">Use search to find folders and documents, or open a folder to browse.</span></div>
         </div>
-
-        <div class="hero-card">
-          <b>Technical Knowledge Hub</b>
-          <div class="bar"></div>
-          <div class="bar short"></div>
-          <div class="fakebox">
-            <b>Folders</b>
-            <small>Documents<br>Subfolders<br>Reference material</small>
-          </div>
-        </div>
+        <div class="hero-card"><b>Technical Knowledge Hub</b><div class="bar"></div><div class="bar short"></div><div class="fakebox"><b>Folders</b><small>Documents<br>Subfolders<br>Anything you want</small></div></div>
       </div>
-
-      <div class="section-title">
-        <label>OVERVIEW</label>
-        <h2>Explore the Knowledge Base <small id="docCount"></small></h2>
-      </div>
-
+      <div class="section-title"><label>OVERVIEW</label><h2>Explore the Knowledge Base <small id="docCount"></small></h2></div>
       <div id="folderCards" class="cards"></div>
-
       <div id="overviewEmpty" class="overview-empty">
         <b>Your knowledge folders will appear here.</b>
-        <span>Use the sidebar to browse folders or open Manage Content to create/import content.</span>
+        <span>Use the sidebar to browse existing folders, or open <strong>Manage Content</strong> to create/import content.</span>
       </div>
     </section>
 
@@ -88,12 +63,10 @@
           <button class="primary" id="folderNewArticleBtn">📄 New Article</button>
         </div>
       </div>
-
       <div class="folder-toolbar">
         <button id="folderBackBtn">← Back</button>
         <input id="folderFilter" placeholder="Search this folder...">
       </div>
-
       <div id="folderContents" class="folder-contents"></div>
     </section>
 
@@ -102,14 +75,12 @@
         <button class="back" id="backBtn">← Back</button>
         <div id="articlePath"></div>
       </div>
-
       <div class="article-actions">
         <button class="secondary" id="articleEditBtn">✎ Edit</button>
         <button class="secondary" id="articleNewSubBtn">📁 New Subfolder</button>
         <button class="primary" id="articleNewBtn">📄 New Article</button>
         <button class="danger" id="articleDeleteBtn">🗑 Delete</button>
       </div>
-
       <article id="article" class="article"></article>
     </section>
 
@@ -118,48 +89,20 @@
         <div class="panel">
           <div class="eyebrow">CONTENT MANAGER</div>
           <h2>Build your knowledge base</h2>
-          <p>Create folders, subfolders and articles. Import documents and organise your content.</p>
-
-          <div class="row">
-            <label>Current folder</label>
-            <select id="currentFolder"></select>
-          </div>
-
-          <div class="row">
-            <button class="primary" id="newFolderBtn">+ New Folder</button>
-            <button class="primary" id="newArticleBtn">+ New Article</button>
-          </div>
-
+          <p>Browse folders, open documents, create subfolders and add articles from wherever you are. Write naturally using simple text formatting.</p>
+          <div class="row"><label>Current folder</label><select id="currentFolder"></select></div>
+          <div class="row"><button class="primary" id="newFolderBtn">+ New Folder</button><button class="primary" id="newArticleBtn">+ New Article</button></div>
           <div id="tree" class="tree"></div>
-
-          <div class="recycle-link">
-            <button id="recycleBtn">♻ Recycle Bin <span id="trashCount">0</span></button>
-          </div>
+          <div class="recycle-link"><button id="recycleBtn">♻ Recycle Bin <span id="trashCount">0</span></button></div>
         </div>
-
         <div class="panel editor-panel">
           <div class="eyebrow">ARTICLE EDITOR</div>
-
-          <div id="editorEmpty">
-            <h2>Choose New Article</h2>
-            <p>Create a new article or select an existing article from the tree.</p>
-          </div>
-
+          <div id="editorEmpty"><h2>Choose New Article</h2><p>Create a new article or select an existing article from the tree.</p></div>
           <div id="editor" class="hidden">
-            <label>Folder</label>
-            <select id="editFolder"></select>
-
-            <label>Title</label>
-            <input id="editTitle" placeholder="e.g. What is a Server?">
-
+            <label>Folder</label><select id="editFolder"></select>
+            <label>Title</label><input id="editTitle" placeholder="e.g. What is a Server?">
             <label>Content</label>
-
-            <div class="image-upload-row">
-              <button class="secondary" type="button" id="addImagesBtn">🖼 Add images at cursor</button>
-              <input id="inlineImageUpload" type="file" accept="image/*" multiple hidden>
-              <span id="editorFormatNote" class="format-note">Text/Markdown editor. Uploaded images are inserted at the cursor position.</span>
-            </div>
-
+            <div class="image-upload-row"><button class="secondary" type="button" id="addImagesBtn">🖼 Add images at cursor</button><input id="inlineImageUpload" type="file" accept="image/*" multiple hidden><span id="editorFormatNote" class="format-note">Text/Markdown editor. Uploaded images are inserted at the cursor position.</span></div>
             <textarea id="editContent" spellcheck="true" placeholder="# Heading
 
 Write your notes here.
@@ -173,85 +116,69 @@ Write your notes here.
 2. Another step
 
 > Important note"></textarea>
-
-            <div class="hint">
-              <b>Formatting:</b>
-              <code>#</code> heading ·
-              <code>##</code> section ·
-              <code>###</code> subsection ·
-              <code>-</code> bullet ·
-              <code>1.</code> numbered step ·
-              <code>&gt;</code> note
-            </div>
-
-            <div class="editor-actions">
-              <button class="primary" id="saveBtn">Save Article</button>
-              <button id="deleteBtn" class="danger">Delete</button>
-            </div>
+            <div class="hint"><b>Formatting:</b> <code>#</code> heading · <code>##</code> subheading · <code>###</code> small heading · <code>-</code> bullet · <code>1.</code> numbered step · <code>&gt;</code> note · blank line = new paragraph.</div>
+            <div class="editor-actions"><button class="primary" id="saveBtn">Save Article</button><button id="deleteBtn" class="danger">Delete</button></div>
           </div>
-
           <div class="folder-editor hidden" id="folderEditor">
-            <label>Parent folder</label>
-            <select id="parentFolder"></select>
-
-            <label>Folder name</label>
-            <input id="folderName" placeholder="e.g. Networking">
-
+            <label>Parent folder</label><select id="parentFolder"></select>
+            <label>Folder name</label><input id="folderName" placeholder="e.g. Networking">
             <button class="primary" id="saveFolderBtn">Create Folder</button>
           </div>
         </div>
       </div>
-
       <div class="storage-panel">
         <div class="storage-head">
-          <div>
-            <b>CONTENT FOLDER</b>
-            <small>Keep your knowledge as normal files on your PC.</small>
-          </div>
+          <div><b>CONTENT FOLDER</b><small>Keep your knowledge as normal files on your PC.</small></div>
           <span id="folderStatus">Not connected</span>
         </div>
-
         <div class="storage-actions">
           <button id="connectBtn">📁 Connect CONTENT FOLDER</button>
-          <button id="importBtn">📄 Import text files</button>
-          <button id="uploadDocsBtn">⬆ Upload documents &amp; images</button>
-          <input id="documentUpload" type="file" accept=".txt,.md,.docx,.doc,image/*" multiple hidden>
+          <button id="importBtn">📄 Import text files</button><button id="uploadDocsBtn">⬆ Upload documents &amp; images</button><input id="documentUpload" type="file" accept=".txt,.md,.docx,.doc,image/*" multiple hidden>
           <button id="exportBtn">⬇ Export content</button>
         </div>
-
         <details class="storage-help">
           <summary>How do I connect my text files?</summary>
           <ol>
-            <li>Create a folder on your PC for your knowledge base.</li>
-            <li>Put your TXT, Markdown or DOCX files inside it.</li>
-            <li>Click Connect CONTENT FOLDER and choose that folder.</li>
-            <li>Use Upload documents to add DOCX, text documents and images.</li>
-            <li>Use Export content to create a backup.</li>
+            <li>Create one folder on your PC, for example <code>Knowledge Base Content</code>.</li>
+            <li>Put your <code>.txt</code>, <code>.md</code> or <code>.docx</code> files inside it. You can also organise them into subfolders.</li>
+            <li>Click <strong>Connect CONTENT FOLDER</strong> and choose that folder.</li>
+            <li>Use <strong>Import text files</strong> for existing <code>.txt</code>/<code>.md</code> notes, or <strong>Upload documents</strong> to add <code>.docx</code> and text documents.</li>
+            <li>Use <strong>Export content</strong> when you want a backup of your articles as files.</li>
           </ol>
-          <p><strong>Supported:</strong> TXT, Markdown, DOCX and common image formats. Legacy DOC files must be converted to DOCX first.</p>
+          <p><strong>Supported:</strong> TXT, Markdown, DOCX (Word) and common image formats. DOCX images are extracted and displayed. Legacy <code>.doc</code> files must be converted to <code>.docx</code> first. Changes are saved in this browser; export a backup regularly.</p>
         </details>
       </div>
     </section>
 
     <section id="recycleView" class="view hidden">
-      <div class="article-head">
-        <button class="back" id="recycleBackBtn">← Back</button>
-        <div>Recycle Bin</div>
-      </div>
-
+      <div class="article-head"><button class="back" id="recycleBackBtn">← Back</button><div>Recycle Bin</div></div>
       <div class="panel">
         <div class="eyebrow">RECYCLE BIN</div>
         <h2>Deleted items</h2>
-        <p>Deleted folders and articles stay here until you permanently remove or restore them.</p>
+        <p>Deleted folders and articles stay here until you permanently remove them or restore them.</p>
         <div id="trashList" class="trash-list"></div>
-        <div class="editor-actions">
-          <button class="danger" id="emptyTrashBtn">Empty Recycle Bin</button>
-        </div>
+        <div class="editor-actions"><button class="danger" id="emptyTrashBtn">Empty Recycle Bin</button></div>
       </div>
     </section>
   </main>
 
   <script src="https://unpkg.com/mammoth@1.8.0/mammoth.browser.min.js"></script>
   <script src="assets/app.js"></script>
+  <script>
+    // V5 convenience: always provide a reliable way back to Home.
+    document.getElementById('homeBtn')?.addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+
+    // If the app has no overview cards yet, show a useful empty state instead of a blank area.
+    const refreshOverviewState = () => {
+      const cards = document.getElementById('folderCards');
+      const empty = document.getElementById('overviewEmpty');
+      if (!cards || !empty) return;
+      empty.style.display = cards.children.length ? 'none' : 'flex';
+    };
+    refreshOverviewState();
+    new MutationObserver(refreshOverviewState).observe(document.getElementById('folderCards'), {childList:true});
+  </script>
 </body>
 </html>
