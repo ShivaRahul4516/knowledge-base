@@ -10,3 +10,18 @@ nav button{cursor:pointer}nav button:hover{transform:none}
 .article-actions .danger{padding:10px 14px}.editor-panel textarea:focus,.editor-panel input:focus,.editor-panel select:focus{outline:2px solid #8ed2ed;outline-offset:1px}
 
 button:disabled{opacity:.55;cursor:not-allowed}.primary:active,.secondary:active,.danger:active{transform:translateY(1px)}
+
+/* Drag-and-drop and document upload */
+[draggable="true"]{cursor:grab}
+[draggable="true"]:active{cursor:grabbing}
+.content-item[draggable="true"]:hover,.folder-title[draggable="true"]:hover,.file[draggable="true"]:hover{outline:1px dashed #079ce9;outline-offset:2px}
+.folder-title{padding:7px 8px;border-radius:6px}
+.folder-title:hover{background:#f0f7fb}
+.chips .hint{margin:0}
+
+/* Inline image upload and rendered document images */
+.image-upload-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:8px 0}.format-note{font-size:12px;color:#71859a}.kb-inline-image,.article img{max-width:100%;height:auto;display:block;margin:16px auto;border-radius:10px;border:1px solid #dce5ee}.article table{border-collapse:collapse;width:100%;margin:18px 0;display:block;overflow-x:auto}.article th,.article td{border:1px solid #dce5ee;padding:9px 12px;text-align:left}.article th{background:#f1f7fb}.dark .article th,.dark .article td{border-color:#29435b}.dark .article th{background:#162d44}
+
+/* Hide the duplicate current-folder label in the top bar; keep the page breadcrumb. */
+.top-left #crumb{display:none!important}
+
