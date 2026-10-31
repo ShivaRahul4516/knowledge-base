@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Build content-index.json from the repository's content/**/*.txt files."""
+"""Build content-index.json from content/**/*.txt and *.docx files.
+
+TXT articles keep the original JSON structure. DOCX articles are indexed by
+path and converted in the browser when opened, using Mammoth.js.
+"""
 import hashlib
 import json
 from pathlib import Path
@@ -7,17 +11,22 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 CONTENT = ROOT / "content"
 OUTPUT = ROOT / "content-index.json"
+SUPPORTED = {".txt", ".docx"}
+
 
 def stable_id(prefix: str, path: str) -> str:
     return prefix + hashlib.sha256(path.encode("utf-8")).hexdigest()[:16]
 
+
 if not CONTENT.exists():
-    raise SystemExit("Missing content/ folder. Add your TXT files under content/.")
+    raise SystemExit("Missing content/ folder. Add your TXT/DOCX files under content/.")
 
 folders = []
 folder_id_by_path = {}
-directories = sorted((p for p in CONTENT.rglob("*") if p.is_dir()),
-                     key=lambda p: p.as_posix().casefold())
+directories = sorted(
+    (p for p in CONTENT.rglob("*") if p.is_dir()),
+    key=lambda p: p.as_posix().casefold(),
+)
 
 for directory in directories:
     rel = directory.relative_to(CONTENT).as_posix()
@@ -33,21 +42,29 @@ for directory in directories:
     })
 
 articles = []
-for file in sorted(CONTENT.rglob("*.txt"), key=lambda p: p.as_posix().casefold()):
+files = sorted(
+    (p for p in CONTENT.rglob("*") if p.is_file() and p.suffix.lower() in SUPPORTED),
+    key=lambda p: p.as_posix().casefold(),
+)
+
+for file in files:
     rel = file.relative_to(CONTENT)
     folder_rel = "" if rel.parent == Path(".") else rel.parent.as_posix()
     folder_id = folder_id_by_path.get(folder_rel) if folder_rel else None
-    articles.append({
+    article = {
         "id": stable_id("a-", rel.as_posix()),
         "folder": folder_id,
         "title": file.stem,
-        "content": file.read_text(encoding="utf-8"),
+        "content": file.read_text(encoding="utf-8") if file.suffix.lower() == ".txt" else "",
         "path": rel.as_posix(),
-    })
+    }
+    if file.suffix.lower() == ".docx":
+        article["sourceFormat"] = "docx"
+        article["contentFormat"] = "docx"
+    articles.append(article)
 
-# Root-level TXT files are placed into a generated "General" folder so they
-# remain visible in the existing folder/article interface.
-root_articles = [a for a in articles if a["folder"] is None]
+# Root-level supported files go into General, matching the original TXT behavior.
+root_articles = [article for article in articles if article["folder"] is None]
 if root_articles:
     general_path = "General"
     general_id = stable_id("f-", general_path)
