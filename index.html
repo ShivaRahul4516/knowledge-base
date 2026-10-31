@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Technical Knowledge Hub</title>
-  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/style.css?v=20261031-sidebar-heading-refresh">
   <style>
     .top-left{display:flex;align-items:center;gap:12px}
     .home-btn{border:0;background:transparent;color:inherit;cursor:pointer;font:inherit;padding:7px 10px;border-radius:8px}
@@ -18,6 +18,7 @@
     .storage-help summary{cursor:pointer;font-weight:600;color:#0f2742}
     .storage-help li{margin:7px 0}
   </style>
+<style>#crumb{display:none!important;visibility:hidden!important;width:0!important;margin:0!important;padding:0!important}</style>
 </head>
 <body>
   <aside class="sidebar">
@@ -27,7 +28,7 @@
   </aside>
 
   <main>
-    <header class="topbar"><div class="top-left"><button class="home-btn" id="homeBtn" type="button">⌂ Home</button><span id="crumb">Home</span></div><div class="top-actions">
+    <header class="topbar"><div class="top-left"><button class="home-btn" id="homeBtn" type="button" aria-label="Go to home">⌂ <span>Home</span></button></div><div class="top-actions">
       <button class="primary" id="manageBtn">✎ Manage Content</button>
       <button class="iconbtn" id="themeBtn">◐</button>
     </div></header>
