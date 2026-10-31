@@ -70,7 +70,7 @@
 
 - By Default, this type of user has no permission   for Cabinet Creation and Document type Creation.
 
-###User Pool (Mandatory)
+### User Pool (Mandatory)
 
 - Named User Pool: Licenses are assigned individually to users. To accommodate new users beyond the license limit, existing users must be removed to free up licenses.
 
