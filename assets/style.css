@@ -25,3 +25,116 @@ button:disabled{opacity:.55;cursor:not-allowed}.primary:active,.secondary:active
 /* Hide the duplicate current-folder label in the top bar; keep the page breadcrumb. */
 .top-left #crumb{display:none!important}
 
+
+/* Professional office-document heading hierarchy */
+.article{
+  max-width:920px;
+  line-height:1.72;
+  color:#26384b;
+}
+.article h1{
+  color:#102b46;
+  font-size:30px;
+  line-height:1.25;
+  font-weight:800;
+  letter-spacing:-.45px;
+  margin:0 0 24px;
+  padding:0 0 14px;
+  border-bottom:3px solid #168ac4;
+}
+.article h2{
+  color:#155b85;
+  font-size:22px;
+  line-height:1.35;
+  font-weight:750;
+  margin:34px 0 13px;
+  padding:9px 14px;
+  background:#eef6fb;
+  border-left:4px solid #168ac4;
+  border-radius:0 7px 7px 0;
+}
+.article h3{
+  color:#263f57;
+  font-size:17px;
+  line-height:1.4;
+  font-weight:750;
+  margin:25px 0 9px;
+  padding-bottom:6px;
+  border-bottom:1px solid #dce5ed;
+}
+.article p{margin:10px 0 14px;line-height:1.8}
+.article ul,.article ol{padding-left:26px;margin:10px 0 18px}
+.article li{padding-left:4px;margin:5px 0;line-height:1.7}
+.article blockquote{
+  border-left:4px solid #d39a32;
+  background:#fff8e9;
+  color:#604b24;
+  padding:13px 17px;
+  border-radius:0 7px 7px 0;
+}
+.dark .article{color:#d5e1ec}
+.dark .article h1{color:#edf5fb;border-color:#42a9db}
+.dark .article h2{color:#a9ddf5;background:#17334b;border-color:#42a9db}
+.dark .article h3{color:#dce9f3;border-color:#29435b}
+.dark .article blockquote{background:#392f1d;color:#f0d9a8;border-color:#d6a84d}
+
+/* Definitively hide the dynamic current-folder text beside Home. */
+#crumb{display:none!important;visibility:hidden!important;width:0!important;margin:0!important;padding:0!important}
+
+
+/* Professional office-style documentation headings */
+.article h1{
+  font-size:30px;line-height:1.25;font-weight:800;letter-spacing:-.35px;
+  color:#102b46;margin:0 0 25px;padding:0 0 14px;
+  border-bottom:3px solid #168ac4;
+}
+.article h2{
+  font-size:21px;line-height:1.35;font-weight:750;color:#155b85;
+  margin:34px 0 13px;padding:10px 15px;
+  background:#eef6fb;border-left:4px solid #168ac4;border-radius:0 7px 7px 0;
+}
+.article h3{
+  font-size:17px;line-height:1.4;font-weight:750;color:#263f57;
+  margin:25px 0 9px;padding-bottom:7px;border-bottom:1px solid #dce5ed;
+}
+.article p{line-height:1.8;margin:10px 0 14px}
+.article li{line-height:1.7;margin:5px 0}
+.dark .article h1{color:#edf5fb;border-color:#42a9db}
+.dark .article h2{color:#a9ddf5;background:#17334b;border-color:#42a9db}
+.dark .article h3{color:#dce9f3;border-color:#29435b}
+
+/* Cleaner professional sidebar: one folder label per folder, nested hierarchy */
+.sidebar{
+  width:285px;padding:24px 17px 28px;
+  background:linear-gradient(180deg,#0b1b2f 0%,#102943 100%);
+  border-right:1px solid #1d3852;
+}
+.brand{gap:12px;margin:0 4px 25px;padding:0 4px 20px;border-bottom:1px solid #203b56}
+.logo{width:44px;height:44px;border-radius:13px;background:linear-gradient(135deg,#0aa4e9,#0876bb);box-shadow:0 5px 16px #079ce933}
+.brand b{font-size:13px;line-height:1.35;letter-spacing:.15px;color:#f4f8fc}
+.brand small{font-size:11px;color:#9bb7d0}
+.searchbox{height:43px;margin:0 2px 22px;border-radius:10px;background:#142d49;border:1px solid #294965}
+.searchbox:focus-within{border-color:#38a9df;box-shadow:0 0 0 3px #168ac422}
+.searchbox input{font-size:13px}
+#nav{display:flex;flex-direction:column;gap:3px}
+.nav-section-label{padding:0 11px 9px;color:#77bce2;font-size:10px;font-weight:800;letter-spacing:1.5px}
+.nav-node{display:flex;flex-direction:column;gap:2px}
+.nav-folder,.nav-article{
+  display:flex;align-items:center;gap:9px;width:100%;min-width:0;
+  border:0;border-radius:8px;background:transparent;color:#dce8f5;
+  text-align:left;padding:9px 10px 9px calc(10px + var(--depth,0)*13px);
+  font-size:13px;line-height:1.35;transition:background .15s,color .15s;
+}
+.nav-folder:hover,.nav-article:hover{background:#183955;color:#fff}
+.nav-folder:focus-visible,.nav-article:focus-visible{outline:2px solid #48b8e8;outline-offset:1px}
+.nav-folder-icon{flex:0 0 15px;color:#69b9e4;font-size:16px}
+.nav-doc-icon{flex:0 0 15px;color:#9bb7d0;font-size:16px}
+.nav-item-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.nav-article{padding-top:7px;padding-bottom:7px;padding-left:calc(31px + var(--depth,0)*13px);color:#a9bfd2;font-size:12px}
+.nav-empty{padding:12px;color:#9bb7d0;font-size:12px}
+.top-left{gap:0}
+.home-btn{display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border-radius:9px;font-size:13px;font-weight:700;color:#087db4}
+.home-btn:hover{background:#eef7fc}
+.dark .home-btn:hover{background:#18334b}
+@media(max-width:1000px){.sidebar{width:235px}main{margin-left:235px}}
+@media(max-width:700px){.sidebar{width:100%;padding:20px 17px}.brand{margin-bottom:18px}}
