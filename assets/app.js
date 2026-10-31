@@ -443,6 +443,7 @@ function show(view) {
   }
 }
 
+
 function showHome() {
   show("homeView");
   renderHome();
@@ -450,6 +451,10 @@ function showHome() {
 }
 
 window.showHome = showHome;
+
+// Register the Home button click event only once.
+$("homeBtn").addEventListener("click", showHome);
+
 
 /* =========================================
    FOLDER BREADCRUMB
