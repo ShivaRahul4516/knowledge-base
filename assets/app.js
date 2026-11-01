@@ -89,7 +89,7 @@ function renderNavFolder(f, depth=0){
       <button class="nav-folder" type="button" onclick="openFolder('${f.id}')" title="${esc(f.name)}">
         <span class="nav-folder-icon">📁</span><span class="nav-item-name">${esc(f.name)}</span>
       </button>
-      ${articles.map(a=>`<button class="nav-article" type="button" onclick="openArticle('${a.id}')" title="${esc(a.title)}"><span class="nav-doc-icon">▤</span><span class="nav-item-name">${esc(a.title)}</span></button>`).join("")}
+      ${articles.map(a=>`<button class="nav-article" type="button" onclick="openArticle('${a.id}')" title="${esc(a.title)}"><span class="nav-doc-icon"><i data-lucide="file-text"></i></span><span class="nav-item-name">${esc(a.title)}</span></button>`).join("")}
       ${subs.map(child=>renderNavFolder(child,depth+1)).join("")}
     </div>`;
 }
