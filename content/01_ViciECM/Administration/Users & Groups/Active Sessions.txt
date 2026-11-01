@@ -1,0 +1,34 @@
+# Active Sessions
+
+## Overview
+
+- Active Sessions displays the users who are currently logged in to ViciECM applications.
+- Administrators can view the logged-in user's details, identify which application they are accessing and check when they logged in.
+- Administrators can also terminate individual sessions or close all active sessions at once.
+
+## Session Details
+
+The Active Sessions grid displays the following information:
+
+- **Full Name:** Displays the name of the logged-in user along with their username.
+- **Application Name:** Displays the name of the application the user is currently accessing.
+- **Logged In Date/Time:** Displays the date and time when the user logged in.
+
+## Session Management
+
+### Close Session
+
+- Click the **Close Session** icon against the required user to terminate their active session.
+- This allows administrators to end an individual user's session without affecting other logged-in users.
+
+### Close All
+
+- Click **Close All** to terminate the active sessions of all logged-in users.
+- This option is useful when administrators need to end all active sessions at once.
+
+### Refresh
+
+- Click **Refresh** to reload the Active Sessions grid.
+- This displays the latest available session information.
+
+> **Note:** The Generated Time displayed above the grid indicates when the session information was generated.
