@@ -81,7 +81,8 @@
 ### Cabinet Creation
 - User cannot create new Cabinets without this permission.
 
-### User cannot create new Doc Type without this permission.
+### Doc Type Creation 
+- User cannot create new Document Type without this permission.
 
 ### User Status
 - Set to Active / Inactive.
