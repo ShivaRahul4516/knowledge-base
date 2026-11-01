@@ -40,6 +40,13 @@
   ],
   "articles": [
     {
+      "id": "a-3faa5cb9e9865ba0",
+      "folder": "f-8623c8d1413557b1",
+      "title": "Active Sessions",
+      "content": "# Active Sessions\n\n## Overview\n\n- Active Sessions displays the users who are currently logged in to ViciECM applications.\n- Administrators can view the logged-in user's details, identify which application they are accessing and check when they logged in.\n- Administrators can also terminate individual sessions or close all active sessions at once.\n\n## Session Details\n\nThe Active Sessions grid displays the following information:\n\n- **Full Name:** Displays the name of the logged-in user along with their username.\n- **Application Name:** Displays the name of the application the user is currently accessing.\n- **Logged In Date/Time:** Displays the date and time when the user logged in.\n\n## Session Management\n\n### Close Session\n\n- Click the **Close Session** icon against the required user to terminate their active session.\n- This allows administrators to end an individual user's session without affecting other logged-in users.\n\n### Close All\n\n- Click **Close All** to terminate the active sessions of all logged-in users.\n- This option is useful when administrators need to end all active sessions at once.\n\n### Refresh\n\n- Click **Refresh** to reload the Active Sessions grid.\n- This displays the latest available session information.\n\n> **Note:** The Generated Time displayed above the grid indicates when the session information was generated.",
+      "path": "01_ViciECM/Administration/Users & Groups/Active Sessions.txt"
+    },
+    {
       "id": "a-8eff8f9fb62e364f",
       "folder": "f-8623c8d1413557b1",
       "title": "External Users",
