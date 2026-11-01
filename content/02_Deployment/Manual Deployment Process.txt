@@ -1,4 +1,4 @@
-# VTPL-079 - Application Patch Deployment Procedure
+# VTPL-079 - Manual Deployment Process
 
 ## 1. Pre-Deployment Preparation
 
