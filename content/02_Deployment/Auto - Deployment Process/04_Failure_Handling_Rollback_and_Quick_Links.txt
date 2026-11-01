@@ -1,0 +1,83 @@
+# Auto-Deployment – Failure Handling and References
+
+## 1. Deployment Failure and Automatic Rollback
+
+If the deployment fails, the system will automatically perform a rollback using the rollback scripts provided in the deployment package.
+
+## 2. Retrying a Failed Deployment
+
+If the deployment needs to be attempted again, follow these steps:
+
+1. Make the necessary corrections based on the deployment failure.
+2. Return to VCDeploy.
+3. Refresh the Client Version page.
+4. If required, upload the updated deployment package.
+5. Click **Save Changes**.
+6. Verify that the status is displayed as **Ready to Deploy**.
+7. Proceed with the deployment again.
+
+### Important
+
+Proceed with another deployment attempt only after the required corrections have been made and the VCDeploy status is confirmed as **Ready to Deploy**.
+
+## 3. Deployment Notification Emails
+
+The source procedure contains examples of:
+
+- Failed deployment notification email.
+- Successful deployment notification email.
+
+Review the relevant notification to understand whether the deployment attempt was unsuccessful or successful.
+
+## 4. Quick Access Links
+
+### Auto-Deployment Folder
+
+```text
+C:\Vici_Auto_deployment\ViciAutoDeployment
+```
+
+### Network Release Folder
+
+```text
+\\vtplsvr03\f\InternalRelease\ViciCloud 9.1.1.9\
+```
+
+### VCDeploy
+
+Use the approved internal VCDeploy sign-in link.
+
+## 5. Final Deployment Checklist
+
+### Phase 1 – Package Preparation
+
+- [ ] Date-based folder created using `DD-MMM-YYYY`.
+- [ ] Server folder prepared and prohibited items excluded.
+- [ ] Register and Unregister batch files included.
+- [ ] Testing folder included if required.
+- [ ] Applicable Database Deploy and Rollback scripts included.
+- [ ] Required filenames verified.
+
+### Phase 2 – VCDeploy Configuration
+
+- [ ] New Client created.
+- [ ] Client Name verified in the Client List.
+- [ ] Correct Client selected under Client Version.
+- [ ] Next version number identified using `PreviousVersionInstalled`.
+- [ ] Prepared ZIP package uploaded.
+- [ ] **Ready to Deploy** status confirmed.
+
+### Phase 3 – Server Configuration and Execution
+
+- [ ] Remote access to the target server established.
+- [ ] Correct Vici_Autodeployment folder opened.
+- [ ] Relevant service names configured in `config.json`.
+- [ ] Relevant Ready Task Scheduler entries configured.
+- [ ] Command Prompt opened as Administrator.
+- [ ] Deployment command executed for the intended server.
+- [ ] Deployment outcome reviewed.
+- [ ] Rollback/retry procedure followed if deployment failed.
+
+## 6. End of Procedure
+
+This completes the documented ViciECM Auto-Deployment procedure.

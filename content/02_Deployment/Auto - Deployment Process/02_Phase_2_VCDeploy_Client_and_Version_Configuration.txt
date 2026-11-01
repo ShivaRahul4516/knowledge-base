@@ -1,0 +1,72 @@
+# Auto-Deployment – Phase 2
+
+## VCDeploy Client and Version Configuration
+
+Use VCDeploy to create the Client and Client Version configuration and upload the prepared deployment package.
+
+## 1. Sign In to VCDeploy
+
+Open the VCDeploy sign-in page and sign in using the authorized account.
+
+## 2. Create a New Client
+
+Create a new Client in VCDeploy.
+
+## 3. Verify the Client Name
+
+After successfully creating the Client, verify that the Client Name is displayed in the Client List.
+
+## 4. Open Client Version
+
+From the sidebar, select:
+
+1. **Client Version**
+2. Click **Edit**.
+3. Select the Client that was created.
+
+## 5. Identify the Version Number
+
+### 5.1 Open the Vici_Autodeployment Folder
+
+Open the `Vici_Autodeployment` folder on `VTPL-079`.
+
+### 5.2 Locate Reg_Key_path in the Config File
+
+1. Open the `config` file.
+2. Locate the `Reg_Key_path` value.
+3. Open Registry Editor.
+4. Navigate to the registry path specified by `Reg_Key_path`.
+
+### 5.3 Check PreviousVersionInstalled
+
+Check the value of `PreviousVersionInstalled` to identify the currently installed version.
+
+#### Version Number Example
+
+If the currently installed version is:
+
+`9.1.1.2`
+
+Enter the next version number in VCDeploy:
+
+`9.1.1.3`
+
+## 6. Upload the Prepared Deployment Package
+
+Upload the ZIP file containing the four folders created during Phase 1 into VCDeploy.
+
+Example ZIP filename from the procedure:
+
+`30-Sep-2026.zip`
+
+After uploading the package, click **Save Changes**.
+
+## 7. Verify Deployment Readiness
+
+After saving the changes, verify that the Client Version status is displayed as:
+
+**Ready to Deploy**
+
+### Important
+
+Proceed to Phase 3 only after the status is confirmed as **Ready to Deploy**.

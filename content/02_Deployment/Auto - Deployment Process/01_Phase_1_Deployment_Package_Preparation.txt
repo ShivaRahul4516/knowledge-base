@@ -1,0 +1,136 @@
+# Auto-Deployment – Phase 1
+
+## Deployment Package Preparation
+
+Begin the preparation process once the required patch folders have been received.
+
+## 1. Receive the Required Patch Folders
+
+Once the required patch folders are received, review the supplied patch package and identify the folders and files required for deployment.
+
+## 2. Create a Date-Based Folder on the Local PC
+
+Create a new folder on the local PC using the current date.
+
+### Folder Naming Format
+
+Use the following format:
+
+`DD-MMM-YYYY`
+
+Examples:
+
+- `14-Sep-2026`
+- `20-Oct-2026`
+
+The month must be written using a three-letter abbreviation.
+
+## 3. Create the Required Folders
+
+Create the following four folders inside the date-based folder:
+
+- `Server`
+- `Register`
+- `Testing`
+- `Database`
+
+## 3.1 Server Folder
+
+The received patch contains a folder named `Server`.
+
+Copy the required contents from the patch Server folder into the locally created Server folder.
+
+### Important: Items to Exclude
+
+Copy the required folders present in the Server folder, but do **not** copy the following items:
+
+- `Flags`
+- `ViciECMPatch`
+- `ViciECMPatch.zip`
+
+These files/folders must not be included in the deployment package.
+
+## 3.2 Register Folder
+
+The Register folder must contain the required batch files:
+
+- `Register`
+- `Unregister`
+
+## 3.3 Testing Folder (Optional)
+
+If Performance and/or Functionality testing is going to be performed, include the relevant folders inside the Testing folder.
+
+Required subfolders, depending on the testing enabled:
+
+- `Performance/`
+- `Functionality/`
+
+### Testing ZIP File Names
+
+The ZIP files must be named exactly as specified in `config.json`:
+
+- `Results_Performance.zip`
+- `Results_Functionality.zip`
+
+The Testing folder is optional. Include it only when performance or functionality testing is required.
+
+## 3.4 Database Folder
+
+The Database folder must contain the required SQL deployment and rollback scripts, if provided.
+
+First, identify whether the repository is connected to:
+
+- SQL Server
+- Oracle Server
+
+For each applicable database type, both Deploy and Rollback scripts are required. Take the required scripts from the Patch folder.
+
+### SQL Server – Expected File Names
+
+- `Sql_Rep_Deploy.sql`
+- `Sql_Rep_Rollback.sql`
+- `Sql_Rp_Deploy.sql`
+- `Sql_Rp_Rollback.sql`
+
+### Oracle – Expected File Names
+
+- `Ora_Rep_Deploy.sql`
+- `Ora_Rep_Rollback.sql`
+- `Ora_Rp_Deploy.sql`
+- `Ora_Rp_Rollback.sql`
+
+## 4. Consolidating SQL Deployment Scripts
+
+In the documented example, four `.txt` files containing SQL database deployment scripts were provided.
+
+Follow these steps to consolidate the scripts into a single SQL deployment file:
+
+1. Create a new blank text file on the local PC.
+2. Copy and paste the contents of all four `.txt` files into the new file on the local PC.
+3. Do not modify the original files in the supplied Network Path.
+4. Select **File → Save As**.
+5. Select **All Files** as the file type.
+6. Change the file extension from `.txt` to `.sql`.
+7. Save the consolidated deployment file using the required naming convention, for example:
+
+   `Sql_Rep_Deploy.sql`
+
+Repeat the same consolidation process for the Rollback file, if required.
+
+### Important
+
+Do not provide four separate files for Rep_Deploy and another four separate files for Rep_Rollback. The scripts must be consolidated according to the required naming convention.
+
+## 5. Phase 1 Completion
+
+This completes the folder creation and deployment package preparation process.
+
+Before proceeding, verify that:
+
+- The date-based folder follows the `DD-MMM-YYYY` format.
+- The Server folder contains the required contents and excludes the prohibited items.
+- The Register folder contains the Register and Unregister batch files.
+- The Testing folder is included only when required.
+- The Database folder contains the applicable Deploy and Rollback scripts.
+- The files follow the required naming conventions.

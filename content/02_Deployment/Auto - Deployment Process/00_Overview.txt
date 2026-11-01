@@ -1,0 +1,23 @@
+# Auto-Deployment
+
+## Overview
+
+Auto-Deployment is a process used to deploy software updates to a target server in a controlled and automated manner.
+
+## Why Is Auto-Deployment Used?
+
+The main purpose is to deploy a software update without manually performing every individual operation on the server.
+
+## What Does the Auto-Deployment Process Involve?
+
+- Preparing the deployment package
+- Configuring the required Client and Version in VCDeploy
+- Uploading the deployment package
+- Configuring the target server
+- Executing the deployment
+
+## Deployment Phases
+
+1. **Phase 1 – Deployment Package Preparation:** Prepare the required folders and deployment files on the local PC.
+2. **Phase 2 – VCDeploy Configuration:** Create the Client and Client Version, upload the ZIP package, and verify deployment readiness.
+3. **Phase 3 – Server Configuration and Execution:** Configure the target server and execute the deployment command.

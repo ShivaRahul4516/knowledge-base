@@ -1,0 +1,84 @@
+# Auto-Deployment – Phase 3
+
+## Target Server Configuration and Deployment Execution
+
+Proceed with Phase 3 only after the Client Version status in VCDeploy is confirmed as **Ready to Deploy**.
+
+## 1. Take Remote Access of the Server
+
+Use Remote Desktop Connection to access the target server.
+
+The supplied procedure uses `VTPL-079` as the example server.
+
+## 2. Navigate to the Vici_Autodeployment Folder
+
+Navigate to:
+
+`C:\Vici_Autodeployment`
+
+Open the Auto-Deployment folder.
+
+## 3. Configure config.json
+
+Open the `config` file and navigate to the bottom of the configuration.
+
+Configure the required Services and Task Scheduler entries in `config.json`.
+
+### 3.1 Open the Services Window
+
+1. Press `Win + R`.
+2. Enter:
+
+   `services.msc`
+
+3. Press Enter to open the Services window.
+
+### 3.2 Identify Relevant Service Names
+
+Copy the names of the relevant services and enter them in the appropriate list in `config.json`.
+
+Use the service names applicable to the target server.
+
+### 3.3 Identify Relevant Task Scheduler Entries
+
+1. Open Task Scheduler.
+2. Identify tasks related to the `VTPL-079` server.
+3. Check the task status.
+4. Use task names whose status is **Ready**.
+
+#### Important Notes
+
+- Do not copy the names of tasks whose status is **Disabled**.
+- If none of the tasks are in the Ready status, the supplied procedure instructs you to enable any one service and update it in the configuration file.
+
+## 4. Execute Auto-Deployment Using Command Prompt
+
+Open Command Prompt as an Administrator.
+
+### 4.1 Change to the Vici_Autodeployment Folder
+
+In Command Prompt, enter:
+
+```cmd
+cd <File path of Vici_Autodeployment folder>
+```
+
+Press Enter.
+
+### 4.2 Execute the Deployment Command
+
+Enter the following command:
+
+```cmd
+Deploy_main.exe vtpl-079
+```
+
+Press Enter.
+
+#### Shortcut
+
+Type `DEPLO` and press `TAB` to auto-fill `Deploy_main.exe`.
+
+## 5. Auto-Deployment Execution
+
+The Auto-Deployment process will start after the command is executed.
