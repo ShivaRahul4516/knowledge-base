@@ -1,0 +1,88 @@
+# Group Management
+
+## Overview
+
+- Group Management is used to create and manage groups of users.
+- Multiple users can be assigned to a single group.
+- Users assigned to a group inherit the permissions configured for that group.
+- Administrators can create groups, assign users, update group details and manage group status.
+
+## Group Creation
+
+1. Click **Add New Group** to create a new group.
+2. Enter the Group Name and Description. Both fields are mandatory.
+3. Click the **Add** icon to save the group.
+4. The newly created group will appear in the Group Management grid.
+
+## User Assignment
+
+ViciECM provides three ways to assign users to groups.
+
+### Method 1: Through Group Management
+
+1. Navigate to **Administration → Groups**.
+2. Click the **Add Users** icon against the required group.
+3. The Select User(s) window displays the available active users.
+4. Select the users you want to add to the group.
+5. Click **Save** to apply the changes.
+
+### Method 2: Through User Management
+
+1. Navigate to **Administration → Users**.
+2. Locate the required user in the Users grid.
+3. Go to the **Action** column.
+4. Click on **Add to Group** to add the selected user to the required group(s).
+
+### Method 3: Through User Creation / Edit User Form
+
+1. Navigate to **Administration → Users**.
+2. Open the user creation form or select an existing user and click **Edit**.
+3. Locate the **Groups** field in the form.
+4. Select the required group(s) from the available list.
+5. Click **Save** to apply the changes.
+
+> **Note:** This is the only method that allows both Active and Inactive users to be assigned to groups.
+
+### Select User(s) Window
+
+The Select User(s) window opens when users are assigned through the Group Management page.
+
+#### Fields
+
+- **Type:** Displays the user icon.
+- **Name:** Displays the name of the user.
+- **Selected:** Indicates whether the user is selected for the group.
+
+#### Options
+
+- **Select All The Above User[s]:** Selects all users visible in the grid.
+
+> **Note:** The Select User(s) window displays only active users. Selecting all users applies only to the users visible on the current page.
+
+### User Selection Process
+
+1. Click the **Add Users** icon against the required group.
+2. Select the required users.
+3. Click **Save** to apply the selection.
+4. Click **Cancel** to close the window without saving the changes.
+
+## Group Modification
+
+- Click the **Update** icon to save changes made to the group details.
+- Click **Cancel** to discard the modifications.
+
+## Group Status Management
+
+- Each group can have either Active or Inactive status.
+- A green tick indicates that the group is Active.
+- A grey tick indicates that the group is Inactive.
+- Click the status icon to change the group's status.
+- To inactivate multiple groups, select the required groups and click **Inactive Group(s)**.
+
+## Export Operations
+
+- **Export To Excel:** Exports group details to an Excel file.
+- **Export To PDF:** Exports group details to a PDF file.
+- The export dropdown provides two options:
+  - **Current Page:** Exports the groups displayed on the current page.
+  - **All Pages:** Exports all available group records.
