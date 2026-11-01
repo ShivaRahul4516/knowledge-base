@@ -1,5 +1,5 @@
 
-# Manual Deployment Process
+# Basics of Deployment
 
 ## 1. Basics
 
@@ -31,52 +31,8 @@
 - PROD → Live / Production Use
 
 ---
+## 2. Server Details
 
-## 2. Deployment Process
-
-### 2.1 Stop the Required Services
-- Press `Win + R`.
-- Type `services.msc`.
-- Stop the following services:
-  - Text Extraction
-  - Format Converter
-  - Doc Manager
-  - Workflow Escalation
-
-### 2.2 Download the Patch Files
-- In the Support Repository, the team will create a job with the required files attached.
-- Log in as the assigned user and download the attached files.
-
-### 2.3 Prepare the Deployment Folder
-- Press `Win + R`.
-- Enter the shared path.
-- Run the batch file, which creates the required folder structure with the current date.
-- Log in to the Support Repository.
-- Navigate to `Workflow → My Jobs → Process → Attachments`.
-- Download the necessary files.
-- Move or paste the files into their respective folders.
-
-### 2.4 Execute the Patch
-- Run the Patch.
-- Select Incremental Backup.
-- This automatically creates a folder with the current date.
-- The Full Backup option takes too much time.
-
-### 2.5 Update Deployment Documentation
-- Update the Bugs List file.
-- Rename the Excel file using the assignee's name.
-
-### 2.6 Restart Services and Verify the Application
-- Once the patch work is completed, start the services again.
-- Try logging in to the application.
-
-### 2.7 Rollback Procedure
-- If you are unable to log in to the application, you can use the rollback script with the Team Lead's permission.
-
----
-
-## 3. Server Details
-
-### 3.1 Deployment Server
+### 2.1 Deployment Server
 - Server: VTPL-079
 - Shared Path: `\\vtplsvr03\f\InternalRelease\ViciCloud 9.1.1.9`
