@@ -156,3 +156,18 @@ button:disabled{opacity:.55;cursor:not-allowed}.primary:active,.secondary:active
 /* Keep navigation controls clickable above decorative layers */
 #nav,.nav-node,.nav-folder,.nav-article{position:relative;z-index:2;pointer-events:auto}
 .nav-folder,.nav-article{cursor:pointer}
+.nav-doc-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    color: #9bb5cc;
+    flex-shrink: 0;
+}
+
+.nav-doc-icon svg {
+    width: 14px;
+    height: 14px;
+    stroke-width: 1.7;
+}
