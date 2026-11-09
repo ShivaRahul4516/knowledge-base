@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Technical Knowledge Hub</title>
   <link rel="stylesheet" href="assets/style.css?v=20261031-functionality-fix">
+  <link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/highlight.js@11.11.1/styles/github-dark.min.css">
   <style>
     .top-left{display:flex;align-items:center;gap:12px}
     .home-btn{border:0;background:transparent;color:inherit;cursor:pointer;font:inherit;padding:7px 10px;border-radius:8px}
@@ -163,6 +165,10 @@ Write your notes here.
   </main>
 
   <script src="https://unpkg.com/mammoth@1.8.0/mammoth.browser.min.js"></script>
+  <!-- Markdown Parser -->
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.min.js"></script>
+  <!-- Syntax Highlighting -->
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.11.1/highlight.min.js"></script>
   <script src="assets/app.js"></script>
   <script>
     // V5 convenience: always provide a reliable way back to Home.
