@@ -171,3 +171,198 @@ button:disabled{opacity:.55;cursor:not-allowed}.primary:active,.secondary:active
     height: 14px;
     stroke-width: 1.7;
 }
+
+/* ==========================================
+   TECHNICAL KNOWLEDGE HUB
+   PROFESSIONAL CODE BLOCKS
+========================================== */
+
+/* Code block container */
+.article .code-block {
+    margin: 26px 0;
+    border: 1px solid #293b52;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #0d1117;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+}
+
+/* Code block header */
+.article .code-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
+    background: #182333;
+    border-bottom: 1px solid #2c3b50;
+}
+
+/* Language label */
+.article .code-language {
+    color: #c4d4e5;
+    font-size: 12px;
+    font-weight: 750;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Copy button */
+.article .copy-code {
+    background: #26374c;
+    color: #e2eaf3;
+    border: 1px solid #40536b;
+    border-radius: 7px;
+    padding: 7px 13px;
+    font-size: 12px;
+    font-weight: 650;
+    transition: background .2s ease;
+}
+
+.article .copy-code:hover {
+    background: #34506d;
+}
+
+/* Code area */
+.article .code-block pre {
+    margin: 0;
+    padding: 22px;
+    background: #0d1117;
+    overflow-x: auto;
+    white-space: pre;
+    tab-size: 4;
+}
+
+/* Code text */
+.article .code-block pre code {
+    display: block;
+    background: transparent;
+    color: #e6edf3;
+    padding: 0;
+    font-family: "Cascadia Code", "Fira Code",
+                 Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.85;
+    white-space: pre;
+    overflow-wrap: normal;
+}
+
+/* Syntax highlighting */
+.article .code-block .hljs {
+    background: transparent;
+}
+
+/* Inline code */
+.article code:not(pre code) {
+    background: #edf3f8;
+    color: #c02663;
+    padding: 3px 6px;
+    border-radius: 5px;
+    font-family: Consolas, monospace;
+    font-size: .9em;
+}
+
+/* ==========================================
+   PROFESSIONAL TABLE DESIGN
+========================================== */
+
+.article {
+    max-width: 100%;
+    min-width: 0;
+}
+
+.article table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 24px 0;
+    font-size: 14px;
+    border: 1px solid #dce5ee;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Table header */
+.article thead {
+    background: #eaf2f9;
+}
+
+.article th {
+    padding: 13px 16px;
+    color: #173b5b;
+    font-weight: 750;
+    text-align: left;
+    border-bottom: 2px solid #cbd9e6;
+}
+
+/* Table cells */
+.article td {
+    padding: 12px 16px;
+    color: #435a71;
+    border-bottom: 1px solid #e5ebf1;
+    vertical-align: top;
+}
+
+/* Alternating rows */
+.article tbody tr:nth-child(even) {
+    background: #f6f9fc;
+}
+
+.article tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ==========================================
+   DARK MODE
+========================================== */
+
+.dark .article code:not(pre code) {
+    background: #24384e;
+    color: #f5a4c5;
+}
+
+.dark .article table {
+    border-color: #29435b;
+}
+
+.dark .article thead {
+    background: #1b354e;
+}
+
+.dark .article th {
+    color: #d8edfa;
+    border-color: #35516b;
+}
+
+.dark .article td {
+    color: #c5d4e2;
+    border-color: #29435b;
+}
+
+.dark .article tbody tr:nth-child(even) {
+    background: #172b40;
+}
+
+/* ==========================================
+   MOBILE RESPONSIVENESS
+========================================== */
+
+@media (max-width: 700px) {
+
+    .article .code-block pre {
+        padding: 15px;
+    }
+
+    .article .code-block pre code {
+        font-size: 12px;
+    }
+
+    .article table {
+        font-size: 12px;
+    }
+
+    .article th,
+    .article td {
+        padding: 9px 11px;
+    }
+}
