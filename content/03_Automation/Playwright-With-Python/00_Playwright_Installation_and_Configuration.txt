@@ -329,29 +329,7 @@ After creating the virtual environment, configure Visual Studio Code to use the 
 
 This ensures that the project uses the correct Python interpreter and the packages installed within its virtual environment.
 
-## 14. Managing Project Dependencies
-
-Once all the required packages have been installed, create a `requirements.txt` file.
-
-This file maintains a record of the installed Python packages and their versions.
-
-Execute:
-
-```powershell
-pip freeze > requirements.txt
-```
-
-To install the same dependencies in another environment:
-
-```powershell
-pip install -r requirements.txt
-```
-
-Maintaining this file helps reproduce the Python environment without manually installing each package.
-
-**Important:** `requirements.txt` records Python package dependencies. It does not install Playwright browser binaries. Browser installation must be performed separately.
-
-## 15. Verifying the Complete Installation
+## 14. Verifying the Complete Installation
 
 After completing the installation and configuration, verify that all the required tools and packages are available.
 
@@ -395,7 +373,7 @@ python -m playwright install --list
 
 If the commands execute successfully and the required browser binaries are available, the installation can proceed to the first automation test.
 
-## 16. Creating and Executing the First Automation Test
+## 15. Creating and Executing the First Automation Test
 
 To verify that Playwright and Pytest are working together, create a Python file named `test_example.py` inside the `Tests` directory.
 
@@ -437,7 +415,7 @@ python -m pytest Tests/test_example.py -v -s
 
 If the test passes, it confirms that the basic Python, Playwright, Chromium, and Pytest setup is working.
 
-## 17. Common Installation and Configuration Issues
+## 16. Common Installation and Configuration Issues
 
 | Issue | Possible Resolution |
 |---|---|
@@ -450,7 +428,7 @@ If the test passes, it confirms that the basic Python, Playwright, Chromium, and
 | Browser installation failure | Check internet connectivity, proxy restrictions, and download permissions |
 | Playwright browser version mismatch | Update the browser binaries using the Playwright installation command |
 
-## 18. Important Commands Reference
+## 17. Important Commands Reference
 
 | Command | Description |
 |---|---|
