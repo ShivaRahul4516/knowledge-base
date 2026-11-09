@@ -238,14 +238,14 @@ function renderHome(query=""){
 }
 window.showHome = showHome;
 
-function renderMarkdown(md){
  const markdownParser = window.markdownit({
     html: false,
     breaks: false,
     linkify: true,
+
     highlight: function (str, lang) {
-        if (lang && hljs.getLanguage(lang)) {
-            return hljs.highlight(str, {
+        if (lang && window.hljs && window.hljs.getLanguage(lang)) {
+            return window.hljs.highlight(str, {
                 language: lang
             }).value;
         }
@@ -256,6 +256,7 @@ function renderMarkdown(md){
 function renderMarkdown(md) {
     return markdownParser.render(md || "");
 }
+
 function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
 
 function enhanceCodeBlocks(root) {
