@@ -1,0 +1,336 @@
+# Introduction to Playwright
+
+## 1. Introduction to Playwright
+
+### 1.1 What is Playwright?
+
+Playwright is an open-source browser automation and end-to-end testing framework developed by Microsoft.
+
+It allows developers and testers to automate browser interactions programmatically using languages such as Python, JavaScript, TypeScript, Java and .NET.
+
+Playwright can interact with web applications just like a real user by navigating between pages, clicking buttons, entering text, selecting options, uploading files and validating application behaviour.
+
+It supports three major browser engines:
+
+- **Chromium** – Used by browsers such as Google Chrome and Microsoft Edge.
+- **Firefox** – Mozilla Firefox browser engine.
+- **WebKit** – Browser engine used by Safari.
+
+### 1.2 What is Browser Automation?
+
+Browser automation is the process of controlling a web browser programmatically to perform actions that would otherwise require manual interaction.
+
+Instead of manually opening a website, entering credentials, navigating through pages and checking results, an automation script performs these activities automatically.
+
+#### 1.2.1 Common Browser Automation Activities
+
+- Opening and navigating to websites.
+- Clicking buttons, links and other interactive elements.
+- Entering text into input fields.
+- Selecting options from dropdown menus.
+- Checking and unchecking checkboxes.
+- Submitting forms.
+- Validating text, messages and application elements.
+- Uploading and downloading files.
+- Handling browser tabs, windows, frames and dialogs.
+- Capturing screenshots and recording test traces.
+
+#### 1.2.2 What Can Playwright Automate?
+
+Playwright is primarily designed for browser automation, but it also provides capabilities for API testing, network handling and mobile browser emulation.
+
+**1. Web Browsers**
+
+- Chromium-based browsers.
+- Mozilla Firefox.
+- WebKit-based browsers.
+
+**2. Web Applications**
+
+- Login and authentication workflows.
+- Dashboards and reports.
+- Forms and data-entry operations.
+- Tables, grids and pagination.
+- Menus, dropdowns and navigation.
+- Document management systems.
+- CRM, ERP and other browser-based business applications.
+
+**3. User Interactions**
+
+- Mouse clicks and double-clicks.
+- Keyboard input and keyboard shortcuts.
+- Text entry and selection.
+- Drag-and-drop operations.
+- Hover interactions.
+- Checkbox and radio-button operations.
+
+**4. Forms and Data Validation**
+
+- Filling and submitting forms.
+- Validating mandatory fields.
+- Checking validation messages.
+- Verifying entered and displayed data.
+- Testing dropdowns and multi-select controls.
+
+**5. File Operations**
+
+- Uploading files.
+- Downloading files.
+- Validating downloaded files.
+- Handling file chooser dialogs.
+- Working with file contents through Python.
+
+**6. Browser Windows, Tabs and Frames**
+
+- Handling multiple browser tabs.
+- Switching between pages.
+- Managing pop-up windows.
+- Interacting with iframes.
+- Handling JavaScript alerts, confirmations and prompts.
+
+**7. API Testing**
+
+Playwright provides `APIRequestContext` to send HTTP requests and validate API responses independently of browser interactions.
+
+Common operations include:
+
+- GET
+- POST
+- PUT
+- PATCH
+- DELETE
+
+**8. Network Operations**
+
+- Monitoring network requests and responses.
+- Intercepting browser requests.
+- Mocking API responses.
+- Modifying request and response behaviour.
+- Validating network activity.
+
+**9. Mobile Browser Testing**
+
+Playwright supports mobile device emulation, including:
+
+- Mobile screen dimensions.
+- Device scale factor.
+- Touch input.
+- Mobile browser behaviour.
+- Device-specific browser configurations.
+
+**10. Testing and Diagnostic Operations**
+
+- Capturing screenshots.
+- Recording videos.
+- Generating execution traces.
+- Inspecting test failures.
+- Debugging browser interactions.
+- Validating page content and application behaviour.
+
+**Important Limitation**
+
+Playwright is not a general-purpose desktop or native mobile automation framework. It does not directly automate native Windows desktop applications or native Android and iOS applications through their native interfaces.
+
+It can, however, automate websites and web applications accessed through mobile browsers using device emulation.
+
+#### 1.2.3 Example: Basic Browser Automation
+
+The following example demonstrates how Playwright opens a browser, navigates to a website, retrieves the page title and closes the browser.
+
+```python
+from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+
+    browser = p.chromium.launch(headless=False)
+
+    page = browser.new_page()
+
+    page.goto("https://www.google.com")
+
+    print(page.title())
+
+    browser.close()
+```
+
+**Code Explanation**
+
+| Code | Description |
+|---|---|
+| `sync_playwright()` | Initializes the synchronous Playwright API. |
+| `p.chromium.launch()` | Launches a Chromium browser instance. |
+| `headless=False` | Opens the browser in visible mode. |
+| `browser.new_page()` | Creates a new page using a new browser context. |
+| `page.goto()` | Navigates to the specified URL. |
+| `page.title()` | Retrieves the current page title. |
+| `browser.close()` | Closes the browser instance. |
+
+### 2. Features of Playwright
+
+**1. Cross-Browser Support**
+
+Playwright supports Chromium, Firefox and WebKit, allowing tests to run across different browser engines.
+
+**2. Auto-Waiting**
+
+Playwright automatically waits for elements to satisfy the necessary actionability conditions before performing actions such as clicking.
+
+**3. Web-First Assertions**
+
+Playwright provides assertions that automatically retry until the expected condition is satisfied or the timeout is reached.
+
+**4. Multiple Browser Contexts**
+
+Browser contexts allow independent browser sessions within the same browser instance.
+
+**5. Parallel Test Execution**
+
+Playwright can execute tests in parallel when integrated with suitable test runners such as pytest.
+
+**6. Network Interception**
+
+Playwright can monitor, intercept and modify network requests and responses.
+
+**7. Screenshots and Video Recording**
+
+Playwright supports capturing screenshots and recording videos for debugging and reporting.
+
+**8. Trace Viewer**
+
+Playwright provides a Trace Viewer to inspect test execution, actions, DOM snapshots, network activity and other debugging information.
+
+**9. Headless and Headed Execution**
+
+- Headless mode: Executes the browser without displaying its graphical interface.
+- Headed mode: Executes the browser with its graphical interface visible.
+
+**10. Synchronous and Asynchronous APIs**
+
+Playwright for Python provides both synchronous and asynchronous APIs.
+
+### 3. Playwright and pytest
+
+Playwright is a browser automation library, whereas pytest is a Python testing framework.
+
+They serve different purposes and can be integrated to build automated testing frameworks.
+
+| Playwright | pytest |
+|---|---|
+| Automates browser interactions. | Executes and manages test cases. |
+| Provides browser automation APIs. | Provides test discovery and execution. |
+| Interacts with web elements. | Provides fixtures and test setup. |
+| Supports browser assertions. | Provides test organization and reporting integrations. |
+| Handles browser operations. | Manages test execution and results. |
+
+**Why Use Playwright with pytest?**
+
+- Organizing test cases into separate files.
+- Reusing browser setup through fixtures.
+- Managing test execution.
+- Supporting parametrized tests.
+- Running tests in parallel using plugins.
+- Generating test reports through reporting plugins.
+
+### 4. Basic Playwright Test Using pytest
+
+**Example:**
+
+```python
+from playwright.sync_api import Page, expect
+
+def test_homepage(page: Page):
+
+    page.goto("https://www.google.com")
+
+    expect(page).to_have_title("Google")
+```
+
+**Code Explanation**
+
+| Code | Description |
+|---|---|
+| `Page` | Type annotation representing a Playwright page. |
+| `expect` | Provides Playwright assertions. |
+| `test_homepage()` | A pytest test function. |
+| `page` | Browser page fixture provided by the pytest-playwright plugin. |
+| `page.goto()` | Navigates to the specified website. |
+| `expect(page).to_have_title()` | Validates the page title. |
+
+**Execution Command:**
+
+```bash
+python -m pytest test_playwright_intro.py
+```
+
+The `pytest-playwright` plugin provides fixtures such as `page`, `context` and `browser` for use in pytest test cases.
+
+### 5. Important Playwright Objects
+
+| Object | Description |
+|---|---|
+| Playwright | Entry point for accessing Playwright browser automation functionality. |
+| BrowserType | Represents a browser engine such as Chromium, Firefox or WebKit. |
+| Browser | Represents a launched browser instance. |
+| BrowserContext | Represents an isolated browser session. |
+| Page | Represents an individual browser tab or page. |
+| Locator | Represents a way to find and interact with DOM elements. |
+| Frame | Represents a frame within a page. |
+| Download | Represents a file download. |
+| Request | Represents a network request. |
+| Response | Represents a network response. |
+
+### 6. Playwright Automation Workflow
+
+A typical browser automation workflow follows these steps:
+
+1. Initialize Playwright.
+2. Launch the required browser.
+3. Create a browser context.
+4. Open a new page.
+5. Navigate to the application.
+6. Locate web elements.
+7. Perform user interactions.
+8. Validate expected results.
+9. Capture debugging information when required.
+10. Close the browser.
+
+### 7. Common Use Cases of Playwright
+
+- Web application functional testing.
+- End-to-end testing.
+- Regression testing.
+- Cross-browser testing.
+- UI testing.
+- API testing.
+- Network testing.
+- Form validation.
+- File upload and download testing.
+- Authentication and session testing.
+- Automated browser workflows.
+
+### 8. Official References
+
+**Playwright Documentation**
+
+https://playwright.dev/python/docs/intro
+
+**Playwright Python API Reference**
+
+https://playwright.dev/python/docs/api/class-playwright
+
+**Page API**
+
+https://playwright.dev/python/docs/api/class-page
+
+**Network Documentation**
+
+https://playwright.dev/python/docs/network
+
+**API Testing**
+
+https://playwright.dev/python/docs/api-testing
+
+**pytest Documentation**
+
+https://docs.pytest.org/
+
