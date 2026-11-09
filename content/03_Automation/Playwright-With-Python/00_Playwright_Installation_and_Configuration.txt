@@ -321,4 +321,153 @@ After creating the virtual environment, configure Visual Studio Code to use the 
 ### Steps
 
 1. Open the Playwright project in Visual Studio Code.
-2
+2. Press `Ctrl + Shift + P`.
+3. Search for `Python: Select Interpreter`.
+4. Select the interpreter located inside the project's `.venv` directory.
+5. Open a new terminal.
+6. Verify that the virtual environment is activated.
+
+This ensures that the project uses the correct Python interpreter and the packages installed within its virtual environment.
+
+## 14. Managing Project Dependencies
+
+Once all the required packages have been installed, create a `requirements.txt` file.
+
+This file maintains a record of the installed Python packages and their versions.
+
+Execute:
+
+```powershell
+pip freeze > requirements.txt
+```
+
+To install the same dependencies in another environment:
+
+```powershell
+pip install -r requirements.txt
+```
+
+Maintaining this file helps reproduce the Python environment without manually installing each package.
+
+**Important:** `requirements.txt` records Python package dependencies. It does not install Playwright browser binaries. Browser installation must be performed separately.
+
+## 15. Verifying the Complete Installation
+
+After completing the installation and configuration, verify that all the required tools and packages are available.
+
+Execute the following commands individually.
+
+**Python**
+
+```powershell
+python --version
+```
+
+**pip**
+
+```powershell
+pip --version
+```
+
+**Playwright**
+
+```powershell
+python -m playwright --version
+```
+
+**Pytest**
+
+```powershell
+pytest --version
+```
+
+**Installed Python Packages**
+
+```powershell
+pip list
+```
+
+**Playwright Browser Installation**
+
+```powershell
+python -m playwright install --list
+```
+
+If the commands execute successfully and the required browser binaries are available, the installation can proceed to the first automation test.
+
+## 16. Creating and Executing the First Automation Test
+
+To verify that Playwright and Pytest are working together, create a Python file named `test_example.py` inside the `Tests` directory.
+
+Add the following code:
+
+```python
+from playwright.sync_api import sync_playwright
+
+def test_open_website():
+
+    with sync_playwright() as p:
+
+        browser = p.chromium.launch(headless=False)
+
+        page = browser.new_page()
+
+        page.goto("https://playwright.dev/")
+
+        print(page.title())
+
+        browser.close()
+```
+
+### Execute the Test
+
+Navigate to the project root directory and execute:
+
+```powershell
+python -m pytest Tests/test_example.py -v -s
+```
+
+### Expected Result
+
+1. Playwright launches the Chromium browser.
+2. The browser navigates to the Playwright official website.
+3. The page title is retrieved and displayed in the terminal.
+4. The browser closes after execution.
+5. Pytest displays the test execution result.
+
+If the test passes, it confirms that the basic Python, Playwright, Chromium, and Pytest setup is working.
+
+## 17. Common Installation and Configuration Issues
+
+| Issue | Possible Resolution |
+|---|---|
+| Python command not recognized | Verify Python installation and PATH configuration |
+| pip command not recognized | Verify pip installation and use `python -m pip` |
+| Playwright browser executable not found | Execute `python -m playwright install` |
+| ModuleNotFoundError | Verify the selected Python interpreter and install the missing package |
+| Virtual environment activation failure | Verify the activation command for the selected terminal |
+| Pytest does not discover test cases | Verify test file names and function names |
+| Browser installation failure | Check internet connectivity, proxy restrictions, and download permissions |
+| Playwright browser version mismatch | Update the browser binaries using the Playwright installation command |
+
+## 18. Important Commands Reference
+
+| Command | Description |
+|---|---|
+| `python --version` | Checks the Python version |
+| `pip --version` | Checks the pip version |
+| `python -m venv .venv` | Creates a virtual environment |
+| `.venv\Scripts\Activate.ps1` | Activates the virtual environment in PowerShell |
+| `deactivate` | Deactivates the virtual environment |
+| `python -m pip install --upgrade pip` | Upgrades pip |
+| `pip install playwright` | Installs Playwright |
+| `python -m playwright install` | Installs Playwright browser binaries |
+| `python -m playwright install chromium` | Installs Chromium |
+| `python -m playwright install --list` | Lists Playwright browser installations |
+| `pip install pytest` | Installs Pytest |
+| `pip install pytest-playwright` | Installs Playwright's Pytest integration |
+| `pip list` | Lists installed Python packages |
+| `pip freeze` | Lists installed packages with versions |
+| `pip freeze > requirements.txt` | Saves package versions into requirements.txt |
+| `pip install -r requirements.txt` | Installs packages from requirements.txt |
+| `python -m pytest` | Executes Pytest |
