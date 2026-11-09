@@ -1,0 +1,1684 @@
+# Playwright with Python – Locators and Selectors
+
+## 1. Introduction to Locators
+
+Locators are used to identify elements on a web page so that Playwright can interact with them.
+
+For example, when automating a login page, we need to identify:
+- Username input field.
+- Password input field.
+- Login button.
+- Error or success messages.
+
+Playwright provides several ways to identify these elements, including role, label, text, placeholder, test ID, CSS and XPath.
+
+A locator does not permanently store an element. Playwright resolves it against the current page when an action or assertion is performed. This helps locators work with pages that dynamically update.
+
+### Basic Example
+
+**HTML:**
+```html
+<div class="login-form">
+    <label for="username">Username</label>
+    <input id="username" type="text">
+
+    <label for="password">Password</label>
+    <input id="password" type="password">
+
+    <button type="submit">Login</button>
+</div>
+```
+
+**Playwright Python:**
+```python
+from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+
+    browser = p.chromium.launch(headless=False)
+    page = browser.new_page()
+
+    page.goto("https://example.com")
+
+    page.get_by_label("Username").fill("admin")
+    page.get_by_label("Password").fill("password123")
+
+    page.get_by_role("button", name="Login").click()
+
+    browser.close()
+```
+
+**Explanation:**
+- `page` represents the browser tab.
+- `get_by_label()` identifies the input fields through their labels.
+- `get_by_role()` identifies the Login button.
+- `fill()` enters text into an input field.
+- `click()` performs the button interaction.
+
+---
+
+## 2. Types of Locators in Playwright
+
+| Locator | Purpose |
+|---|---|
+| `get_by_role()` | Identifies elements by their role and accessible name |
+| `get_by_label()` | Identifies form controls through associated labels |
+| `get_by_placeholder()` | Identifies input fields using placeholder text |
+| `get_by_text()` | Identifies elements using visible text |
+| `get_by_alt_text()` | Identifies elements using alternative text |
+| `get_by_title()` | Identifies elements using their title attribute |
+| `get_by_test_id()` | Identifies elements using a test ID |
+| `locator()` | Identifies elements using CSS or XPath selectors |
+
+---
+
+## 3. User-Facing Locators
+
+### 3.1 get_by_role()
+
+`get_by_role()` identifies an element using its ARIA role and accessible name.
+
+**Syntax:**
+```python
+page.get_by_role("role", name="accessible name")
+```
+
+**Example 1 – Button**
+
+HTML:
+```html
+<button type="button">Save</button>
+```
+
+Playwright:
+```python
+page.get_by_role("button", name="Save").click()
+```
+
+**Example 2 – Link**
+
+HTML:
+```html
+<a href="/dashboard">Dashboard</a>
+```
+
+Playwright:
+```python
+page.get_by_role("link", name="Dashboard").click()
+```
+
+**Example 3 – Checkbox**
+
+HTML:
+```html
+<label>
+    <input type="checkbox">
+    Remember me
+</label>
+```
+
+Playwright:
+```python
+page.get_by_role(
+    "checkbox",
+    name="Remember me"
+).check()
+```
+
+**Example 4 – Radio Button**
+
+HTML:
+```html
+<label>
+    <input type="radio" name="gender" value="male">
+    Male
+</label>
+```
+
+Playwright:
+```python
+page.get_by_role(
+    "radio",
+    name="Male"
+).check()
+```
+
+**Example 5 – Heading**
+
+HTML:
+```html
+<h1>Dashboard</h1>
+```
+
+Playwright:
+```python
+page.get_by_role(
+    "heading",
+    name="Dashboard"
+).is_visible()
+```
+
+**Example 6 – Table Row**
+
+HTML:
+```html
+<table>
+    <tr>
+        <td>Invoice_001.pdf</td>
+        <td>Approved</td>
+    </tr>
+</table>
+```
+
+Playwright:
+```python
+page.get_by_role(
+    "row",
+    name="Invoice_001.pdf Approved"
+).is_visible()
+```
+
+**Example 7 – Dropdown**
+
+HTML:
+```html
+<label for="department">Department</label>
+
+<select id="department">
+    <option>Engineering</option>
+    <option>Finance</option>
+</select>
+```
+
+Playwright:
+```python
+page.get_by_label("Department").select_option(
+    label="Engineering"
+)
+```
+
+**Common ARIA roles:**
+
+| Role | HTML example |
+|---|---|
+| `button` | `<button>` |
+| `link` | `<a href="">` |
+| `textbox` | Text input or textarea |
+| `checkbox` | Checkbox input |
+| `radio` | Radio input |
+| `heading` | `<h1>` to `<h6>` |
+| `combobox` | Native select or accessible combobox |
+| `row` | Table row |
+| `cell` | Table cell |
+| `dialog` | Dialog element |
+
+**Important:** The role and accessible name must match the element's actual accessibility information. An element's visible text and accessible name are not always identical.
+
+### 3.2 get_by_label()
+
+`get_by_label()` identifies form controls through their associated label, `aria-label` or `aria-labelledby` information.
+
+**Example 1 – Label with for and id**
+
+HTML:
+```html
+<label for="username">Username</label>
+<input id="username" type="text">
+```
+
+Playwright:
+```python
+page.get_by_label("Username").fill("admin")
+```
+
+**Example 2 – Password Field**
+
+HTML:
+```html
+<label for="password">Password</label>
+<input id="password" type="password">
+```
+
+Playwright:
+```python
+page.get_by_label("Password").fill("password123")
+```
+
+**Example 3 – Label wrapping an input**
+
+HTML:
+```html
+<label>
+    Email Address
+    <input type="email">
+</label>
+```
+
+Playwright:
+```python
+page.get_by_label("Email Address").fill(
+    "admin@example.com"
+)
+```
+
+**Example 4 – aria-label**
+
+HTML:
+```html
+<input type="text" aria-label="Search Documents">
+```
+
+Playwright:
+```python
+page.get_by_label("Search Documents").fill(
+    "Invoice"
+)
+```
+
+**Example 5 – aria-labelledby**
+
+HTML:
+```html
+<span id="folder-label">Folder Name</span>
+
+<input type="text" aria-labelledby="folder-label">
+```
+
+Playwright:
+```python
+page.get_by_label("Folder Name").fill(
+    "Automation"
+)
+```
+
+### 3.3 get_by_placeholder()
+
+`get_by_placeholder()` identifies input elements using their placeholder attribute.
+
+**Example 1 – Username**
+
+HTML:
+```html
+<input
+    type="text"
+    placeholder="Enter username"
+>
+```
+
+Playwright:
+```python
+page.get_by_placeholder(
+    "Enter username"
+).fill("admin")
+```
+
+**Example 2 – Search Field**
+
+HTML:
+```html
+<input
+    type="search"
+    placeholder="Search documents"
+>
+```
+
+Playwright:
+```python
+page.get_by_placeholder(
+    "Search documents"
+).fill("Invoice")
+```
+
+**Example 3 – Folder Name**
+
+HTML:
+```html
+<input
+    type="text"
+    placeholder="Enter folder name"
+>
+```
+
+Playwright:
+```python
+page.get_by_placeholder(
+    "Enter folder name"
+).fill("Automation")
+```
+
+**Example 4 – Exact Matching**
+
+HTML:
+```html
+<input placeholder="Search">
+<input placeholder="Search Documents">
+```
+
+Playwright:
+```python
+page.get_by_placeholder(
+    "Search",
+    exact=True
+).fill("Invoice")
+```
+
+By default, placeholder matching can match substrings. `exact=True` requires an exact match.
+
+### 3.4 get_by_text()
+
+`get_by_text()` identifies an element using its text content.
+
+**Example 1 – Success Message**
+
+HTML:
+```html
+<div>Document uploaded successfully</div>
+```
+
+Playwright:
+```python
+page.get_by_text(
+    "Document uploaded successfully"
+).is_visible()
+```
+
+**Example 2 – Exact Text Matching**
+
+HTML:
+```html
+<button>Save</button>
+<button>Save Changes</button>
+```
+
+Playwright:
+```python
+page.get_by_text(
+    "Save",
+    exact=True
+).click()
+```
+
+**Example 3 – Partial Text Matching**
+
+HTML:
+```html
+<div>
+    Document uploaded successfully. File ID: 1025
+</div>
+```
+
+Playwright:
+```python
+page.get_by_text(
+    "Document uploaded successfully"
+).is_visible()
+```
+
+**Example 4 – Error Message**
+
+HTML:
+```html
+<span class="error">
+    Invalid username or password
+</span>
+```
+
+Playwright:
+```python
+page.get_by_text(
+    "Invalid username or password"
+).is_visible()
+```
+
+**Example 5 – Menu Item**
+
+HTML:
+```html
+<div class="menu">
+    <span>Settings</span>
+</div>
+```
+
+Playwright:
+```python
+page.get_by_text(
+    "Settings",
+    exact=True
+).click()
+```
+
+**Important:** For buttons and links, prefer `get_by_role()` when their role and accessible name are available.
+
+### 3.5 get_by_alt_text()
+
+`get_by_alt_text()` identifies elements using their alternative text, generally an image's `alt` attribute.
+
+**Example 1 – Company Logo**
+
+HTML:
+```html
+<img
+    src="logo.png"
+    alt="Company Logo"
+>
+```
+
+Playwright:
+```python
+page.get_by_alt_text(
+    "Company Logo"
+).is_visible()
+```
+
+**Example 2 – Profile Image**
+
+HTML:
+```html
+<img
+    src="profile.png"
+    alt="User Profile"
+>
+```
+
+Playwright:
+```python
+page.get_by_alt_text(
+    "User Profile"
+).is_visible()
+```
+
+### 3.6 get_by_title()
+
+`get_by_title()` identifies an element through its HTML `title` attribute.
+
+**Example 1 – Refresh Button**
+
+HTML:
+```html
+<button title="Refresh Documents">
+    ↻
+</button>
+```
+
+Playwright:
+```python
+page.get_by_title(
+    "Refresh Documents"
+).click()
+```
+
+**Example 2 – Delete Icon**
+
+HTML:
+```html
+<button title="Delete Document">
+    🗑
+</button>
+```
+
+Playwright:
+```python
+page.get_by_title(
+    "Delete Document"
+).click()
+```
+
+### 3.7 get_by_test_id()
+
+`get_by_test_id()` identifies elements using a dedicated test ID attribute.
+
+**Example 1 – Save Button**
+
+HTML:
+```html
+<button data-testid="save-document">
+    Save
+</button>
+```
+
+Playwright:
+```python
+page.get_by_test_id(
+    "save-document"
+).click()
+```
+
+**Example 2 – Document Name**
+
+HTML:
+```html
+<div data-testid="document-name">
+    Invoice_001.pdf
+</div>
+```
+
+Playwright:
+```python
+page.get_by_test_id(
+    "document-name"
+).is_visible()
+```
+
+**Example 3 – Search Input**
+
+HTML:
+```html
+<input data-testid="document-search">
+```
+
+Playwright:
+```python
+page.get_by_test_id(
+    "document-search"
+).fill("Invoice")
+```
+
+**Important:** Test IDs are intended for automated testing. They are generally more stable than selectors based on styling classes.
+
+---
+
+## 4. CSS Selectors
+
+CSS selectors identify elements using HTML tags, IDs, classes, attributes and relationships.
+
+In Playwright Python:
+
+```python
+page.locator("CSS_SELECTOR")
+```
+
+### 4.1 Locate by ID
+
+An ID selector uses `#` followed by the element's ID.
+
+**Example 1 – Username**
+
+HTML:
+```html
+<input
+    id="username"
+    type="text"
+>
+```
+
+Playwright:
+```python
+page.locator("#username").fill("admin")
+```
+
+**Example 2 – Login Button**
+
+HTML:
+```html
+<button id="loginBtn">Login</button>
+```
+
+Playwright:
+```python
+page.locator("#loginBtn").click()
+```
+
+**Example 3 – Search Field**
+
+HTML:
+```html
+<input id="searchBox" type="search">
+```
+
+Playwright:
+```python
+page.locator("#searchBox").fill("Invoice")
+```
+
+### 4.2 Locate by Class
+
+A class selector uses `.` followed by the class name.
+
+**Example 1 – Save Button**
+
+HTML:
+```html
+<button class="save-button">Save</button>
+```
+
+Playwright:
+```python
+page.locator(".save-button").click()
+```
+
+**Example 2 – Multiple Classes**
+
+HTML:
+```html
+<button class="btn primary save-button">
+    Save
+</button>
+```
+
+Playwright:
+```python
+page.locator(
+    ".btn.primary.save-button"
+).click()
+```
+
+**Example 3 – Input Field**
+
+HTML:
+```html
+<input class="form-control">
+```
+
+Playwright:
+```python
+page.locator(
+    ".form-control"
+).fill("admin")
+```
+
+### 4.3 Locate by Tag Name
+
+A tag selector identifies elements using their HTML tag.
+
+**Example 1 – Button**
+
+HTML:
+```html
+<button>Save</button>
+```
+
+Playwright:
+```python
+page.locator("button").count()
+```
+
+**Example 2 – Input**
+
+HTML:
+```html
+<input type="text">
+```
+
+Playwright:
+```python
+page.locator("input").count()
+```
+
+**Example 3 – Table**
+
+HTML:
+```html
+<table id="documentTable">
+    <tr><td>Invoice.pdf</td></tr>
+</table>
+```
+
+Playwright:
+```python
+page.locator("table").count()
+```
+
+### 4.4 Locate by Attribute
+
+Attribute selectors identify elements using their HTML attributes.
+
+**Example 1 – Name Attribute**
+
+HTML:
+```html
+<input
+    type="text"
+    name="username"
+>
+```
+
+Playwright:
+```python
+page.locator(
+    'input[name="username"]'
+).fill("admin")
+```
+
+**Example 2 – Type Attribute**
+
+HTML:
+```html
+<input type="password">
+```
+
+Playwright:
+```python
+page.locator(
+    'input[type="password"]'
+).fill("password123")
+```
+
+**Example 3 – Placeholder Attribute**
+
+HTML:
+```html
+<input placeholder="Search Documents">
+```
+
+Playwright:
+```python
+page.locator(
+    '[placeholder="Search Documents"]'
+).fill("Invoice")
+```
+
+**Example 4 – Data Attribute**
+
+HTML:
+```html
+<button data-action="delete">
+    Delete
+</button>
+```
+
+Playwright:
+```python
+page.locator(
+    '[data-action="delete"]'
+).click()
+```
+
+**Example 5 – Partial Attribute Matching**
+
+HTML:
+```html
+<input
+    name="user_email"
+    type="text"
+>
+```
+
+Playwright:
+```python
+page.locator(
+    'input[name^="user"]'
+)
+```
+
+CSS attribute operators:
+
+| Operator | Meaning | Example |
+|---|---|---|
+| `=` | Exact match | `[type="text"]` |
+| `^=` | Starts with | `[name^="user"]` |
+| `$=` | Ends with | `[name$="email"]` |
+| `*=` | Contains | `[name*="user"]` |
+| `~=` | Contains a whitespace-separated word | `[class~="active"]` |
+| `|=` | Exact value or value followed by a hyphen | `[lang|="en"]` |
+
+### 4.5 Combining CSS Selectors
+
+Multiple selectors can be combined to narrow down the target.
+
+**Example 1 – Tag and ID**
+
+HTML:
+```html
+<input id="username" type="text">
+```
+
+Playwright:
+```python
+page.locator("input#username")
+```
+
+**Example 2 – Tag and Class**
+
+HTML:
+```html
+<button class="save-button">Save</button>
+```
+
+Playwright:
+```python
+page.locator("button.save-button")
+```
+
+**Example 3 – Tag and Attribute**
+
+HTML:
+```html
+<input type="text" name="username">
+```
+
+Playwright:
+```python
+page.locator(
+    'input[type="text"][name="username"]'
+)
+```
+
+**Example 4 – Parent and Child**
+
+HTML:
+```html
+<div class="login-form">
+    <input name="username">
+</div>
+```
+
+Playwright:
+```python
+page.locator(
+    ".login-form input"
+).fill("admin")
+```
+
+**Example 5 – Direct Child**
+
+HTML:
+```html
+<div class="login-form">
+    <input name="username">
+</div>
+```
+
+Playwright:
+```python
+page.locator(
+    ".login-form > input"
+).fill("admin")
+```
+
+The space selector matches descendants at any depth. The `>` selector matches only direct children.
+
+### 4.6 CSS Pseudo-Classes
+
+CSS pseudo-classes allow elements to be identified based on their position or state.
+
+**Example 1 – First Child**
+
+HTML:
+```html
+<ul>
+    <li>Administration</li>
+    <li>Users</li>
+    <li>Groups</li>
+</ul>
+```
+
+Playwright:
+```python
+page.locator(
+    "ul li:first-child"
+).click()
+```
+
+**Example 2 – Last Child**
+
+Playwright:
+```python
+page.locator(
+    "ul li:last-child"
+).click()
+```
+
+**Example 3 – Nth Child**
+
+Playwright:
+```python
+page.locator(
+    "ul li:nth-child(2)"
+).click()
+```
+
+**Example 4 – Checked Checkbox**
+
+HTML:
+```html
+<input type="checkbox" checked>
+```
+
+Playwright:
+```python
+page.locator(
+    'input[type="checkbox"]:checked'
+).count()
+```
+
+**Example 5 – Enabled Input**
+
+HTML:
+```html
+<input type="text">
+<input type="text" disabled>
+```
+
+Playwright:
+```python
+page.locator(
+    "input:enabled"
+).count()
+```
+
+---
+
+## 5. XPath Locators
+
+XPath is a query language used to navigate and identify elements in an HTML or XML document.
+
+XPath can identify elements using tags, attributes, text, parent-child relationships, ancestors and siblings.
+
+In Playwright Python:
+
+```python
+page.locator("xpath=EXPRESSION")
+```
+
+Playwright also recognises XPath expressions passed directly to `locator()` when they begin with `//` or `..`.
+
+### 5.1 XPath Using Tag Name
+
+HTML:
+```html
+<button>Save</button>
+<button>Cancel</button>
+```
+
+Playwright:
+```python
+page.locator("//button").count()
+```
+
+### 5.2 XPath Using ID
+
+HTML:
+```html
+<input id="username" type="text">
+```
+
+Playwright:
+```python
+page.locator(
+    '//*[@id="username"]'
+).fill("admin")
+```
+
+### 5.3 XPath Using Class
+
+HTML:
+```html
+<button class="save-button">
+    Save
+</button>
+```
+
+Playwright:
+```python
+page.locator(
+    '//button[@class="save-button"]'
+).click()
+```
+
+For multiple class names, use a class-token expression:
+
+HTML:
+```html
+<button class="btn primary save-button">
+    Save
+</button>
+```
+
+Playwright:
+```python
+page.locator(
+    '//button[contains(concat(" ", normalize-space(@class), " "), " save-button ")]'
+).click()
+```
+
+### 5.4 XPath Using Text
+
+HTML:
+```html
+<button>Save Document</button>
+```
+
+Playwright:
+```python
+page.locator(
+    '//button[text()="Save Document"]'
+).click()
+```
+
+Partial text:
+
+```python
+page.locator(
+    '//button[contains(text(), "Save")]'
+).click()
+```
+
+Text with surrounding whitespace:
+
+```python
+page.locator(
+    '//button[normalize-space(.)="Save Document"]'
+).click()
+```
+
+### 5.5 XPath Using Multiple Attributes
+
+HTML:
+```html
+<input
+    type="text"
+    name="username"
+    class="form-control"
+>
+```
+
+Playwright:
+```python
+page.locator(
+    '//input[@type="text" and @name="username"]'
+).fill("admin")
+```
+
+Another example:
+
+HTML:
+```html
+<button
+    type="button"
+    title="Refresh Documents"
+>
+    Refresh
+</button>
+```
+
+Playwright:
+```python
+page.locator(
+    '//button[@type="button" and @title="Refresh Documents"]'
+).click()
+```
+
+### 5.6 XPath Using Parent and Child Relationships
+
+HTML:
+```html
+<div class="login-form">
+    <input type="text" name="username">
+    <input type="password" name="password">
+</div>
+```
+
+Playwright:
+```python
+page.locator(
+    '//div[@class="login-form"]//input[@name="username"]'
+).fill("admin")
+```
+
+Direct child:
+
+```python
+page.locator(
+    '//div[@class="login-form"]/input[@name="username"]'
+).fill("admin")
+```
+
+Difference:
+- `/` selects a direct child.
+- `//` selects a descendant at any depth.
+
+### 5.7 XPath Using Parent Axis
+
+HTML:
+```html
+<div class="document-row">
+    <span>Invoice_001.pdf</span>
+</div>
+```
+
+Playwright:
+```python
+page.locator(
+    '//span[text()="Invoice_001.pdf"]/parent::div'
+).is_visible()
+```
+
+### 5.8 XPath Using Ancestor Axis
+
+HTML:
+```html
+<div class="document-container">
+    <div class="document-row">
+        <span>Invoice_001.pdf</span>
+    </div>
+</div>
+```
+
+Playwright:
+```python
+page.locator(
+    '//span[text()="Invoice_001.pdf"]/ancestor::div[@class="document-container"]'
+).is_visible()
+```
+
+### 5.9 XPath Using Following-Sibling
+
+HTML:
+```html
+<div class="field">
+    <label>Username</label>
+    <input type="text">
+</div>
+```
+
+Playwright:
+```python
+page.locator(
+    '//label[text()="Username"]/following-sibling::input'
+).fill("admin")
+```
+
+### 5.10 XPath Using Preceding-Sibling
+
+HTML:
+```html
+<div class="field">
+    <input type="text">
+    <label>Username</label>
+</div>
+```
+
+Playwright:
+```python
+page.locator(
+    '//label[text()="Username"]/preceding-sibling::input'
+).fill("admin")
+```
+
+### 5.11 XPath Using Position
+
+HTML:
+```html
+<div class="documents">
+    <button>Open</button>
+    <button>Download</button>
+    <button>Delete</button>
+</div>
+```
+
+Playwright:
+```python
+page.locator(
+    '(//div[@class="documents"]/button)[1]'
+).click()
+```
+
+XPath positions start at 1, unlike Playwright's `nth()`, which starts at 0.
+
+### 5.12 XPath Axes Reference
+
+| Axis | Purpose |
+|---|---|
+| `parent::` | Selects the parent |
+| `child::` | Selects direct children |
+| `ancestor::` | Selects ancestors |
+| `descendant::` | Selects descendants |
+| `following-sibling::` | Selects following siblings |
+| `preceding-sibling::` | Selects preceding siblings |
+| `following::` | Selects nodes that follow the current node |
+| `preceding::` | Selects nodes that precede the current node |
+
+---
+
+## 6. Advanced Locator Techniques
+
+### 6.1 Chaining Locators
+
+Chaining narrows down a search by locating an element inside another locator.
+
+HTML:
+```html
+<div class="login-form">
+    <input name="username">
+    <input name="password">
+    <button>Login</button>
+</div>
+
+<div class="registration-form">
+    <input name="username">
+    <button>Register</button>
+</div>
+```
+
+Playwright:
+```python
+login_form = page.locator(".login-form")
+
+login_form.locator(
+    'input[name="username"]'
+).fill("admin")
+
+login_form.locator(
+    'input[name="password"]'
+).fill("password123")
+
+login_form.get_by_role(
+    "button",
+    name="Login"
+).click()
+```
+
+The search is restricted to the login form instead of matching inputs across the entire page.
+
+### 6.2 filter()
+
+`filter()` narrows down an existing locator using text or another locator.
+
+HTML:
+```html
+<div class="document-row">
+    <span>Invoice_001.pdf</span>
+    <button>Download</button>
+</div>
+
+<div class="document-row">
+    <span>Invoice_002.pdf</span>
+    <button>Download</button>
+</div>
+
+<div class="document-row">
+    <span>Invoice_003.pdf</span>
+    <button>Download</button>
+</div>
+```
+
+Playwright:
+```python
+document = page.locator(
+    ".document-row"
+).filter(
+    has_text="Invoice_002.pdf"
+)
+
+document.get_by_role(
+    "button",
+    name="Download"
+).click()
+```
+
+**Using has:**
+
+HTML:
+```html
+<div class="document-row">
+    <h3>Invoice_001.pdf</h3>
+    <button>Download</button>
+</div>
+
+<div class="document-row">
+    <h3>Invoice_002.pdf</h3>
+    <button>Download</button>
+</div>
+```
+
+Playwright:
+```python
+document = page.locator(
+    ".document-row"
+).filter(
+    has=page.get_by_role(
+        "heading",
+        name="Invoice_002.pdf"
+    )
+)
+
+document.get_by_role(
+    "button",
+    name="Download"
+).click()
+```
+
+**Using has_not:**
+
+```python
+document = page.locator(
+    ".document-row"
+).filter(
+    has_not=page.get_by_text("Deleted")
+)
+```
+
+This example excludes rows containing the text `Deleted`.
+
+### 6.3 first
+
+Selects the first matching element.
+
+HTML:
+```html
+<button>Edit</button>
+<button>Edit</button>
+<button>Edit</button>
+```
+
+Playwright:
+```python
+page.get_by_role(
+    "button",
+    name="Edit"
+).first.click()
+```
+
+### 6.4 last
+
+Selects the last matching element.
+
+```python
+page.get_by_role(
+    "button",
+    name="Edit"
+).last.click()
+```
+
+### 6.5 nth()
+
+Selects an element using its zero-based position.
+
+HTML:
+```html
+<button>Edit</button>
+<button>Delete</button>
+<button>Download</button>
+```
+
+Playwright:
+```python
+page.locator("button").nth(0).click()
+
+page.locator("button").nth(1).click()
+
+page.locator("button").nth(2).click()
+```
+
+| Index | Element |
+|---|---|
+| `nth(0)` | First element |
+| `nth(1)` | Second element |
+| `nth(2)` | Third element |
+
+**Important:** Use positional selection only when the ordering is known and stable. A change in sorting or page layout can change which element an index identifies.
+
+### 6.6 and_()
+
+`and_()` combines two locators. The resulting locator matches elements that satisfy both conditions.
+
+HTML:
+```html
+<button title="Save Document">
+    Save
+</button>
+
+<button title="Cancel Operation">
+    Cancel
+</button>
+```
+
+Playwright:
+```python
+button = page.get_by_role(
+    "button"
+).and_(
+    page.get_by_title("Save Document")
+)
+
+button.click()
+```
+
+### 6.7 or_()
+
+`or_()` combines alternative locators.
+
+HTML:
+```html
+<div class="notification">
+    <button>Continue</button>
+</div>
+```
+
+Alternative page state:
+```html
+<div class="login-form">
+    <button>Sign In</button>
+</div>
+```
+
+Playwright:
+```python
+continue_button = page.get_by_role(
+    "button",
+    name="Continue"
+)
+
+login_button = page.get_by_role(
+    "button",
+    name="Sign In"
+)
+
+alternative_button = continue_button.or_(
+    login_button
+)
+
+alternative_button.first.click()
+```
+
+**Important:** If both elements are present, the combined locator can match multiple elements. Check the current page state before interacting with it.
+
+---
+
+## 7. Handling Multiple Matching Elements
+
+One common issue in automation is when a locator identifies more than one element.
+
+HTML:
+```html
+<table>
+    <tr>
+        <td>Invoice_001.pdf</td>
+        <td><input id="chkSelect" type="checkbox"></td>
+    </tr>
+
+    <tr>
+        <td>Invoice_002.pdf</td>
+        <td><input id="chkSelect" type="checkbox"></td>
+    </tr>
+
+    <tr>
+        <td>Invoice_003.pdf</td>
+        <td><input id="chkSelect" type="checkbox"></td>
+    </tr>
+</table>
+```
+
+Incorrect implementation:
+```python
+page.locator("#chkSelect").check()
+```
+
+This locator matches multiple checkboxes.
+
+### Step 1 – Count matching elements
+
+```python
+checkboxes = page.locator("#chkSelect")
+
+print(checkboxes.count())
+```
+
+### Step 2 – Identify the required row
+
+```python
+document_row = page.get_by_role(
+    "row"
+).filter(
+    has_text="Invoice_002.pdf"
+)
+```
+
+### Step 3 – Locate the checkbox inside that row
+
+```python
+document_row.locator(
+    "#chkSelect"
+).check()
+```
+
+**Important:** Repeated IDs are invalid HTML. A better application implementation would use a class or a unique identifier for each checkbox. Scoping the locator can work around the issue, but it does not fix the underlying HTML defect.
+
+---
+
+## 8. Strict Mode Violations
+
+Playwright applies strictness to operations that require a single element. If a locator matches multiple elements, an action such as `click()` can raise a strict-mode violation.
+
+HTML:
+```html
+<div>Please wait for a short while</div>
+<div>Please wait for a short while</div>
+```
+
+Playwright:
+```python
+page.get_by_text(
+    "Please wait for a short while"
+).click()
+```
+
+This can fail because two elements match.
+
+### Step 1 – Count the matches
+
+```python
+message = page.get_by_text(
+    "Please wait for a short while"
+)
+
+print(message.count())
+```
+
+### Step 2 – Inspect the matching elements
+
+```python
+for index in range(message.count()):
+    print(
+        index,
+        message.nth(index).text_content()
+    )
+```
+
+### Step 3 – Identify the correct element
+
+Use a parent container, a unique attribute, a role or another condition to narrow down the locator.
+
+### Step 4 – Perform the action
+
+```python
+message.first.click()
+```
+
+Only use `.first` after verifying that the first element is actually the intended target.
+
+**Remember:** `count()` helps diagnose multiple matches. It does not automatically guarantee that the page will remain unchanged between counting and interacting.
+
+---
+
+## 9. Working with Iframes
+
+An iframe embeds another HTML document inside the current page.
+
+HTML:
+```html
+<iframe id="documentFrame"></iframe>
+```
+
+Playwright:
+```python
+document_frame = page.frame_locator(
+    "#documentFrame"
+)
+
+document_frame.get_by_role(
+    "button",
+    name="Download"
+).click()
+```
+
+### 9.1 CSS Inside an Iframe
+
+HTML inside the iframe:
+```html
+<input id="chkSelect" type="checkbox">
+```
+
+Playwright:
+```python
+document_frame.locator(
+    "#chkSelect"
+).check()
+```
+
+### 9.2 Role Locator Inside an Iframe
+
+HTML inside the iframe:
+```html
+<button>Download</button>
+```
+
+Playwright:
+```python
+document_frame.get_by_role(
+    "button",
+    name="Download"
+).click()
+```
+
+### 9.3 Text Locator Inside an Iframe
+
+HTML inside the iframe:
+```html
+<div>Document loaded successfully</div>
+```
+
+Playwright:
+```python
+document_frame.get_by_text(
+    "Document loaded successfully"
+).is_visible()
+```
+
+### 9.4 Practical ECM Example
+
+```python
+IF_DOC_IFRAME = page.frame_locator(
+    "iframe"
+)
+
+IF_DOC_IFRAME.locator(
+    "#chkSelect"
+).check()
+```
+
+Replace the iframe selector with the actual unique iframe locator in your application.
+
+For applications containing multiple iframes, identify the correct iframe before interacting with its contents.
+
+---
+
+## 10. Locator Methods and Useful Operations
+
+| Method / Property | Purpose |
+|---|---|
+| `count()` | Returns the number of matching elements |
+| `first` | Selects the first matching element |
+| `last` | Selects the last matching element |
+| `nth(index)` | Selects an element by zero-based position |
+| `click()` | Click
