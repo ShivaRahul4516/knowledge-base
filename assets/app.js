@@ -236,29 +236,71 @@ function renderHome(query=""){
 
   container.innerHTML=html;
 }
-
-
 window.showHome = showHome;
 
 function renderMarkdown(md){
-  const lines=md.replace(/\r/g,"").split("\n"), out=[]; let ul=false,ol=false;
-  function close(){if(ul){out.push("</ul>");ul=false}if(ol){out.push("</ol>");ol=false}}
-  for(const raw of lines){
-    const l=raw.trimEnd();
-    if(!l.trim()){close();continue}
-    let m;
-    if(m=l.match(/^###\s+(.+)/)){close();out.push(`<h3>${esc(m[1])}</h3>`);continue}
-    if(m=l.match(/^##\s+(.+)/)){close();out.push(`<h2>${esc(m[1])}</h2>`);continue}
-    if(m=l.match(/^#\s+(.+)/)){close();out.push(`<h1>${esc(m[1])}</h1>`);continue}
-    if(m=l.match(/^[-*]\s+(.+)/)){if(!ul){close();out.push("<ul>");ul=true}out.push(`<li>${inline(m[1])}</li>`);continue}
-    if(m=l.match(/^\d+\.\s+(.+)/)){if(!ol){close();out.push("<ol>");ol=true}out.push(`<li>${inline(m[1])}</li>`);continue}
-    if(m=l.match(/^>\s?(.+)/)){close();out.push(`<blockquote>${inline(m[1])}</blockquote>`);continue}
-    if(m=l.match(/^!\[([^\]]*)\]\((kbasset:[^)]+)\)$/)){close();out.push(`<p><img class="kb-inline-image" alt="${esc(m[1])}" src="${m[2]}"></p>`);continue}
-    close();out.push(`<p>${inline(l)}</p>`);
-  } close(); return out.join("")
+ const markdownParser = window.markdownit({
+    html: false,
+    breaks: false,
+    linkify: true,
+    highlight: function (str, lang) {
+        if (lang && hljs.getLanguage(lang)) {
+            return hljs.highlight(str, {
+                language: lang
+            }).value;
+        }
+        return "";
+    }
+});
+
+function renderMarkdown(md) {
+    return markdownParser.render(md || "");
 }
 function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
-function inline(s){return esc(s).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/`(.+?)`/g,"<code>$1</code>")}
+
+function enhanceCodeBlocks(root) {
+
+    root.querySelectorAll("pre > code").forEach(code => {
+
+        const pre = code.parentElement;
+
+        if (pre.parentElement.classList.contains("code-block")) return;
+
+        const wrapper = document.createElement("div");
+        wrapper.className = "code-block";
+
+        const toolbar = document.createElement("div");
+        toolbar.className = "code-toolbar";
+
+        const languageClass = [...code.classList]
+            .find(cls => cls.startsWith("language-"));
+
+        const label = document.createElement("span");
+        label.className = "code-language";
+        label.textContent = languageClass
+            ? languageClass.replace("language-", "")
+            : "Code";
+
+        const copyButton = document.createElement("button");
+        copyButton.className = "copy-code";
+        copyButton.textContent = "Copy code";
+        copyButton.type = "button";
+
+        copyButton.onclick = async () => {
+            try {
+                await navigator.clipboard.writeText(code.textContent);
+                copyButton.textContent = "Copied!";
+                setTimeout(() => copyButton.textContent = "Copy code", 1500);
+            } catch (error) {
+                copyButton.textContent = "Copy failed";
+            }
+        };
+
+        toolbar.append(label, copyButton);
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.append(toolbar, pre);
+    });
+}
 
 async function openArticle(id){
   const a=state.articles.find(x=>x.id===id);if(!a)return;
@@ -280,6 +322,7 @@ async function openArticle(id){
     }else{
       articleElement.innerHTML=a.contentFormat==="html"?a.content:renderMarkdown(a.content);
     }
+    enhanceCodeBlocks(articleElement);
     hydrateImages(articleElement);
   }catch(err){
     console.error("Document display failed:",err);
