@@ -1,0 +1,75 @@
+# Playwright with Python – Codegen
+
+## 1. Introduction to Codegen
+
+### What is Codegen?
+
+Codegen (Code Generator) is a built-in Playwright tool that automatically generates automation code based on user interactions with a web application.
+
+It records actions performed in a browser, such as:
+
+- Clicking buttons.
+- Entering text into input fields.
+- Selecting dropdown options.
+- Navigating between pages.
+- Interacting with other web elements.
+
+Codegen generates the corresponding Playwright code, helping testers create automation scripts without manually writing every interaction.
+
+### 1.1 Advantages of Codegen
+
+- Automatically generates Playwright code.
+- Helps identify suitable locators.
+- Reduces manual coding effort.
+- Useful for learning Playwright syntax.
+- Helps quickly create initial automation scripts.
+- Supports generating code in Python and other supported languages.
+
+## 2. Launching Codegen
+
+Playwright Codegen can be launched directly from the terminal.
+
+### 2.1 Basic Command
+
+```bash
+playwright codegen
+```
+
+This opens a browser window and the Playwright Inspector.
+
+### 2.2 Launch Codegen with a URL
+
+```bash
+python -m playwright codegen https://example.com
+```
+
+This opens the specified website directly in the browser.
+
+## 3. Understanding the Codegen Interface
+
+When Codegen starts, two main windows are displayed:
+
+### 3.1 Browser Window
+
+The browser window allows you to interact with the application.
+
+You can perform actions such as:
+
+- Clicking buttons.
+- Filling input fields.
+- Selecting options.
+- Navigating through application pages.
+
+Codegen records these interactions and generates the corresponding automation code.
+
+### 3.2 Playwright Inspector
+
+The Playwright Inspector displays the generated Playwright code.
+
+It also provides locator suggestions when interacting with elements.
+
+You can inspect the generated code and use it as a starting point for your automation scripts.
+
+## 4. Official Documentation
+
+[Playwright – Test Generator](https://playwright.dev/python/docs/codegen)
