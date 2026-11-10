@@ -1,23 +1,59 @@
 # Playwright with Python – Locators and Selectors
 
-## 1. Introduction to Locators
+1. Introduction to Locators
 
-Locators are used to identify elements on a web page so that Playwright can interact with them.
+What is a Locator?
+
+A locator is a mechanism provided by Playwright to identify elements on a web page so that automated tests can interact with them or verify their state.
 
 For example, when automating a login page, we need to identify:
-- Username input field.
-- Password input field.
-- Login button.
-- Error or success messages.
 
-Playwright provides several ways to identify these elements, including role, label, text, placeholder, test ID, CSS and XPath.
+Username input field.
 
-A locator does not permanently store an element. Playwright resolves it against the current page when an action or assertion is performed. This helps locators work with pages that dynamically update.
+Password input field.
 
-### Basic Example
+Login button.
 
-**HTML:**
-```html
+Error or success messages.
+
+Playwright provides several built-in locator methods to identify these elements based on how users perceive and interact with the application.
+
+These include:
+
+Role
+
+Label
+
+Placeholder
+
+Visible text
+
+Alternative text
+
+Title
+
+Test ID
+
+What is a Selector?
+
+A selector is a way of specifying which element or elements Playwright should identify on a web page.
+
+In simple terms, it defines the criteria used to locate an element.
+
+Playwright provides different ways to identify elements, including user-facing locator methods and other selector strategies.
+
+How Playwright Locators Work
+
+A locator does not permanently store a reference to a DOM element.
+
+Playwright resolves the locator against the current page when an action or assertion is performed.
+
+This helps locators work with dynamically updated web pages.
+
+Basic Example
+
+HTML:
+
 <div class="login-form">
     <label for="username">Username</label>
     <input id="username" type="text">
@@ -27,10 +63,9 @@ A locator does not permanently store an element. Playwright resolves it against 
 
     <button type="submit">Login</button>
 </div>
-```
 
-**Playwright Python:**
-```python
+Playwright Python:
+
 from playwright.sync_api import sync_playwright
 
 with sync_playwright() as p:
@@ -46,15 +81,20 @@ with sync_playwright() as p:
     page.get_by_role("button", name="Login").click()
 
     browser.close()
-```
 
-**Explanation:**
-- `page` represents the browser tab.
-- `get_by_label()` identifies the input fields through their labels.
-- `get_by_role()` identifies the Login button.
-- `fill()` enters text into an input field.
-- `click()` performs the button interaction.
+Explanation
 
+page represents the browser tab.
+
+get_by_label() identifies the input fields through their associated labels.
+
+get_by_role() identifies the Login button using its role and accessible name.
+
+fill() enters text into an input field.
+
+click() performs the button interaction.
+
+browser.close() closes the browser.
 ---
 
 ## 2. Types of Locators in Playwright
