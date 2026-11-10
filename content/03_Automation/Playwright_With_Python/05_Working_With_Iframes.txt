@@ -1,0 +1,91 @@
+## 9. Working with Iframes
+
+An iframe embeds another HTML document inside the current page.
+
+HTML:
+```html
+<iframe id="documentFrame"></iframe>
+```
+
+Playwright:
+```python
+document_frame = page.frame_locator(
+    "#documentFrame"
+)
+
+document_frame.get_by_role(
+    "button",
+    name="Download"
+).click()
+```
+
+### 9.1 CSS Inside an Iframe
+
+HTML inside the iframe:
+```html
+<input id="chkSelect" type="checkbox">
+```
+
+Playwright:
+```python
+document_frame.locator(
+    "#chkSelect"
+).check()
+```
+
+### 9.2 Role Locator Inside an Iframe
+
+HTML inside the iframe:
+```html
+<button>Download</button>
+```
+
+Playwright:
+```python
+document_frame.get_by_role(
+    "button",
+    name="Download"
+).click()
+```
+
+### 9.3 Text Locator Inside an Iframe
+
+HTML inside the iframe:
+```html
+<div>Document loaded successfully</div>
+```
+
+Playwright:
+```python
+document_frame.get_by_text(
+    "Document loaded successfully"
+).is_visible()
+```
+
+### 9.4 Practical ECM Example
+
+```python
+IF_DOC_IFRAME = page.frame_locator(
+    "iframe"
+)
+
+IF_DOC_IFRAME.locator(
+    "#chkSelect"
+).check()
+```
+
+Replace the iframe selector with the actual unique iframe locator in your application.
+
+For applications containing multiple iframes, identify the correct iframe before interacting with its contents.
+
+---
+
+## 10. Locator Methods and Useful Operations
+
+| Method / Property | Purpose |
+|---|---|
+| `count()` | Returns the number of matching elements |
+| `first` | Selects the first matching element |
+| `last` | Selects the last matching element |
+| `nth(index)` | Selects an element by zero-based position |
+| `click()` | Click
