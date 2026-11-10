@@ -158,6 +158,13 @@
       "path": "03_Automation/Playwright_With_Python/04_Advanced_Locator_Strategies.txt"
     },
     {
+      "id": "a-c6e5b8df50fd3d29",
+      "folder": "f-35089c736283e9a1",
+      "title": "05_Working_With_Iframes",
+      "content": "## 9. Working with Iframes\n\nAn iframe embeds another HTML document inside the current page.\n\nHTML:\n```html\n<iframe id=\"documentFrame\"></iframe>\n```\n\nPlaywright:\n```python\ndocument_frame = page.frame_locator(\n    \"#documentFrame\"\n)\n\ndocument_frame.get_by_role(\n    \"button\",\n    name=\"Download\"\n).click()\n```\n\n### 9.1 CSS Inside an Iframe\n\nHTML inside the iframe:\n```html\n<input id=\"chkSelect\" type=\"checkbox\">\n```\n\nPlaywright:\n```python\ndocument_frame.locator(\n    \"#chkSelect\"\n).check()\n```\n\n### 9.2 Role Locator Inside an Iframe\n\nHTML inside the iframe:\n```html\n<button>Download</button>\n```\n\nPlaywright:\n```python\ndocument_frame.get_by_role(\n    \"button\",\n    name=\"Download\"\n).click()\n```\n\n### 9.3 Text Locator Inside an Iframe\n\nHTML inside the iframe:\n```html\n<div>Document loaded successfully</div>\n```\n\nPlaywright:\n```python\ndocument_frame.get_by_text(\n    \"Document loaded successfully\"\n).is_visible()\n```\n\n### 9.4 Practical ECM Example\n\n```python\nIF_DOC_IFRAME = page.frame_locator(\n    \"iframe\"\n)\n\nIF_DOC_IFRAME.locator(\n    \"#chkSelect\"\n).check()\n```\n\nReplace the iframe selector with the actual unique iframe locator in your application.\n\nFor applications containing multiple iframes, identify the correct iframe before interacting with its contents.\n\n---\n\n## 10. Locator Methods and Useful Operations\n\n| Method / Property | Purpose |\n|---|---|\n| `count()` | Returns the number of matching elements |\n| `first` | Selects the first matching element |\n| `last` | Selects the last matching element |\n| `nth(index)` | Selects an element by zero-based position |\n| `click()` | Click",
+      "path": "03_Automation/Playwright_With_Python/05_Working_With_Iframes.txt"
+    },
+    {
       "id": "a-fb034889bd3b628b",
       "folder": "f-56f03ecc4003357c",
       "title": "Python",
