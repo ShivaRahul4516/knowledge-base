@@ -170,13 +170,6 @@
       "title": "06_Codegen",
       "content": "# Playwright with Python – Codegen\n\n## 1. Introduction to Codegen\n\n### What is Codegen?\n\nCodegen (Code Generator) is a built-in Playwright tool that automatically generates automation code based on user interactions with a web application.\n\nIt records actions performed in a browser, such as:\n\n- Clicking buttons.\n- Entering text into input fields.\n- Selecting dropdown options.\n- Navigating between pages.\n- Interacting with other web elements.\n\nCodegen generates the corresponding Playwright code, helping testers create automation scripts without manually writing every interaction.\n\n### 1.1 Advantages of Codegen\n\n- Automatically generates Playwright code.\n- Helps identify suitable locators.\n- Reduces manual coding effort.\n- Useful for learning Playwright syntax.\n- Helps quickly create initial automation scripts.\n- Supports generating code in Python and other supported languages.\n\n## 2. Launching Codegen\n\nPlaywright Codegen can be launched directly from the terminal.\n\n### 2.1 Basic Command\n\n```bash\nplaywright codegen\n```\n\nThis opens a browser window and the Playwright Inspector.\n\n### 2.2 Launch Codegen with a URL\n\n```bash\npython -m playwright codegen https://example.com\n```\n\nThis opens the specified website directly in the browser.\n\n## 3. Understanding the Codegen Interface\n\nWhen Codegen starts, two main windows are displayed:\n\n### 3.1 Browser Window\n\nThe browser window allows you to interact with the application.\n\nYou can perform actions such as:\n\n- Clicking buttons.\n- Filling input fields.\n- Selecting options.\n- Navigating through application pages.\n\nCodegen records these interactions and generates the corresponding automation code.\n\n### 3.2 Playwright Inspector\n\nThe Playwright Inspector displays the generated Playwright code.\n\nIt also provides locator suggestions when interacting with elements.\n\nYou can inspect the generated code and use it as a starting point for your automation scripts.\n\n## 4. Official Documentation\n\n[Playwright – Test Generator](https://playwright.dev/python/docs/codegen)\n",
       "path": "03_Automation/Playwright_With_Python/06_Codegen.txt"
-    },
-    {
-      "id": "a-fb034889bd3b628b",
-      "folder": "f-56f03ecc4003357c",
-      "title": "Python",
-      "content": "\n",
-      "path": "03_Automation/Python.txt"
     }
   ]
 }
