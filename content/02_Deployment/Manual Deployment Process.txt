@@ -487,7 +487,18 @@ iisreset /start
 - Verify that the required modules are accessible.
 - Perform basic application functionality checks.
 - Confirm that the deployment has not introduced any immediate application issues.
+- Report any issues encountered during deployment to the concerned team.
 
-### 8.4 Deployment Completion
+### 8.4 Files  Verification
+- Ensure that the modified dates of the corresponding files in the application installation directory match those in the deployment package.
+Expected Result:
 
-- Confirm that all application services and IIS
+- The corresponding files in VTPL-079:
+
+C:\ViciECM\DocManager-64bit
+
+should reflect the same modified dates as the files provided in:
+
+Server\DocManager-64bit
+
+within the local Deployment Package/network path.
