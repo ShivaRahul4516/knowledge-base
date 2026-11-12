@@ -5,7 +5,7 @@
 ### 1.1 Navigate to the Deployment Network Path
 
 - Navigate to the network path where the deployment files are provided.
-- Open the deployment folder corresponding to the required UI/UX version and target server.
+- Open the deployment folder corresponding to the required files and Target Server.
 
 **Example Network Path:**
 
