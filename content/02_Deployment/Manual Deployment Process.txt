@@ -254,7 +254,7 @@ cd C:\ViciECM\DocManager-64bit
 DOCMANAGER.exe /unregserver
 ```
 
-- Check whether `DocManagerps.dll` exists in the same directory.
+- Check whether `DocManagerps.dll` exists in the given patch.
 - If the DLL exists, execute the following command to unregister it:
 
 ```cmd
@@ -263,7 +263,7 @@ regsvr32 /u DocManagerps.dll
 
 **Note:**
 
-- DLL unregistration is conditional on the file being present.
+- DLL unregistration is conditional on the file being present in the given patch.
 - Verify that the unregistration operation completes successfully.
 
 ---
