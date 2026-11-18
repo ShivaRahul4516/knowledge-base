@@ -8,8 +8,7 @@
    - Computer Name
    - Password
 3. Once the credentials are successfully authenticated, you will be automatically logged in to the 079 Server through Remote Desktop Connection.
-![Remote Desktop Connection - Step 1](Images/Remote_Desktop_Connection_1.PNG)
-![Remote Desktop Connection - Step 2](Images/Remote_Desktop_Connection_2.PNG)
+
 ## 2. Open the Services Application
 
 1. Click the **Start** button.
