@@ -51,28 +51,37 @@ If the Format Converter service takes too long:
 3. Locate the Format Converter process.
 4. Select the corresponding process and click **End Task**.
 
-## 4. Restart IIS
+
+## **4. Restart IIS**
 
 Once all the required Vicisoft services have been restarted:
 
-1. Close the Services application.
+1. Close the **Services** application.
 2. Open **Command Prompt (CMD)** with Administrator privileges.
-3. Type the following command:
+3. Execute the following command:
 
    ```cmd
    iisreset
    ```
 
 4. Press **Enter**.
-5. Wait until the IIS reset operation completes successfully.
+5. Wait until the IIS reset operation completes.
+6. Verify that the following success messages appear:
 
-## 5. Complete the Process
+   ```text
+   Internet services successfully stopped
+   Internet services successfully restarted
+   ```
+
+**Expected Result:** IIS services are successfully restarted.
+
+## **5. Complete the Process**
 
 Once the `iisreset` command executes successfully:
 
-1. Verify that the command completes without errors.
-2. Log out of the 079 Server Remote Desktop Connection.
+1. Verify that both stop and restart operations are completed successfully without errors.
+2. Close the Command Prompt window.
+3. Log out of the **079 Server Remote Desktop Connection**.
 
-The service restart procedure for the 079 Server is now complete.
+The service restart procedure for the **079 Server** is now complete.
 
----
